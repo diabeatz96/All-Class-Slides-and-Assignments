@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { T, Code, Slide, Col, Reveal, Tiers, Checklist, Quiz, DeckShell } from "./ui.jsx";
 import { fakeFetch, net, NetControls, RecipeRow, Skeleton, RECIPES } from "./fakeApi.jsx";
+import { LAB_SLIDES } from "./LabSlides.jsx";
 
 /* ------------------------------------------------------------------
    CSC 436  |  Week 7, Thursday Oct 8  |  Mission 6
@@ -44,12 +45,13 @@ function TitleSlide() {
         <div className="kicker">CSC 436, Week 7, Mission 6, Thursday Oct 8</div>
         <h1 style={{ fontSize: 60, lineHeight: 1.0, fontWeight: 800 }}>When it breaks, and how to stop repeating yourself</h1>
         <p style={{ fontSize: 21, color: T.muted, marginTop: 22, maxWidth: 560, lineHeight: 1.5 }}>
-          Tuesday you made it work. Today you make it survive bad wifi, feel fast while it waits, and fit in one reusable hook.
+          Tuesday you made it work. First, an API Lab: Pokémon, a card game, and a fashion API. Then you make it survive bad wifi, feel fast while it waits, and fit in one reusable hook.
         </p>
       </div>
       <div className="panel" style={{ padding: 28 }}>
-        <div style={{ fontSize: 20, fontWeight: 600, color: T.ink, marginBottom: 12 }}>Three things, one app</div>
+        <div style={{ fontSize: 20, fontWeight: 600, color: T.ink, marginBottom: 12 }}>Warm up on real APIs, then harden one app</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 16, lineHeight: 1.5 }}>
+          <div><span className="chip" style={{ background: T.ink, color: "#fff" }}>api lab</span> The five steps of every call. Sequential vs Promise.all. Picking an API and reading its docs.</div>
           <div><span className="chip warn">errors</span> Messages a human can act on. Retry buttons. Automatic retries.</div>
           <div><span className="chip blue">loading</span> Skeletons instead of spinners. Keep old data on screen while refetching.</div>
           <div><span className="chip">hooks</span> Extract useFetch so the three states are written once.</div>
@@ -487,8 +489,9 @@ function CloseSlide() {
 }
 
 const SLIDES = [
-  { el: <TitleSlide />, notes: "Quick. Three chips, three segments. Say: Tuesday it worked, today it survives." },
-  { el: <WarmupSlide />, notes: "Vote by hand per message. The raw TypeError one gets laughs. The empty-state one is the trick: not an error, and it scores a 3. Land the rule: what happened, why, what next." },
+  { el: <TitleSlide />, notes: "Quick. API Lab first, then the three chips. Say: Tuesday it worked, today we play with real APIs, then make it survive." },
+  ...LAB_SLIDES,
+  { el: <WarmupSlide />, notes: "Bridge from the hunt: real APIs fail. Vote by hand per message. The raw TypeError one gets laughs. The empty-state one is the trick: not an error, and it scores a 3. Land the rule: what happened, why, what next." },
   { el: <ErrorKindsSlide />, notes: "Click through all four. Spend the longest on 'right data, wrong shape' since it never hits catch. Two audiences, two messages: user gets state, you get console.error." },
   { el: <RetrySlide />, notes: "Set Failing, retries 2, Retry. Watch attempt climb to 3 then fail. Flip Healthy while it is retrying and it recovers. Ask: should a 404 retry? No." },
   { el: <LoadingSlide />, notes: "Set delay 2500. Click Refresh in each mode. Text jumps, skeleton holds shape, stale keeps the list. Ask which one they would want in their phone's food app." },
