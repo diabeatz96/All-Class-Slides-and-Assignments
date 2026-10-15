@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grand Finale: Build Your Own Booth</title>
+  <link rel="stylesheet" href="/carnival.css" />
+  <link rel="stylesheet" href="./booth.css" />
+</head>
+<body>
+  <div class="tent-top"></div>
+  <header class="marquee">
+    <!-- TODO: your booth name and team names -->
+    <h1 id="booth-name" class="font-black">TODO: Your Booth Name</h1>
+    <p>Team: TODO names</p>
+  </header>
+
+  <main>
+    <div class="help">
+      <h2 class="text-xl font-bold">Getting started (25 minutes)</h2>
+      <ol class="list-decimal">
+        <li>Pick an idea (below) in 2 minutes. Small and finished beats big and broken.</li>
+        <li>Open <code>your-booth/index.html</code> (the page) and <code>your-booth/booth.js</code> (the 3D stage and code).</li>
+        <li>Name your booth in the <code>&lt;h1&gt;</code> above. Save. The page updates by itself.</li>
+        <li>Split up: one teammate per ticket. Every booth you visited today is a parts bin. Copy freely from
+          <code>ring-toss/main.js</code>, <code>fun-house/index.html</code>, and <code>safety-inspector/guestbook.js</code>.</li>
+        <li>Broken? Open the Console (<kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>J</kbd> or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>J</kbd>).
+          At 5 minutes left, stop adding and fix what you have.</li>
+      </ol>
+    </div>
+
+    <div class="milestones">
+      <h2 class="text-xl font-bold">Booth Permit Requirements</h2>
+      <ul class="list-disc pl-6">
+        <li><span class="ticket">Bronze</span> One framework attraction: Tailwind styling, a DaisyUI component or theme, or an Animate.css effect.
+          <i>Copy from:</i> the Fun House.</li>
+        <li><span class="ticket">Silver</span> One Three.js attraction in the stage below (a spinning prize, a ride, a game). Replace the placeholder gem in booth.js.
+          <i>Copy from:</i> the Ring Toss (Ferris wheel, pegs, tent).</li>
+        <li><span class="ticket">Gold</span> One safety feature: a visitor input that is validated and rendered with textContent.
+          <i>Starter:</i> uncomment the form below and the GOLD block in booth.js.</li>
+        <li><span class="ticket">Bonus</span> Make the 3D and CSS talk: clicking something in 3D changes the page, or a form changes the 3D scene.
+          <i>Starter:</i> the BONUS block in booth.js.</li>
+      </ul>
+    </div>
+
+    <div class="help">
+      <h3 class="font-bold">Need an idea?</h3>
+      <ul class="list-disc">
+        <li><b>Dunk Tank:</b> click the target, a sphere drops into the tank.</li>
+        <li><b>Fortune Teller:</b> ask a question, a DaisyUI card flips out with Animate.css.</li>
+        <li><b>Strongman Bell:</b> a slider launches a puck up a 3D tower.</li>
+        <li><b>Cotton Candy:</b> a spinning donut shape grows with every guestbook name.</li>
+      </ul>
+    </div>
+
+    <div id="stage"></div>
+
+    <section id="visitor-area">
+      <!-- GOLD STARTER: select the lines below, press Cmd+/ (or Ctrl+/) to uncomment,
+           then uncomment the GOLD block at the bottom of booth.js.
+      <h2 class="text-xl font-bold">Name our prize</h2>
+      <form id="visitor-form" class="flex flex-wrap gap-2">
+        <input id="visitor-input" class="input input-bordered" placeholder="Your idea" />
+        <button class="btn btn-primary">Submit</button>
+      </form>
+      <p id="visitor-error" class="font-bold text-error"></p>
+      <ul id="visitor-list" class="list-disc pl-6"></ul>
+      -->
+    </section>
+
+    <div class="help">
+      <h3 class="font-bold">Resources</h3>
+      <ul class="list-disc">
+        <li><a href="https://threejs.org/docs/" target="_blank" rel="noopener">Three.js docs</a> ·
+          <a href="https://threejs.org/examples/" target="_blank" rel="noopener">Three.js examples</a></li>
+        <li><a href="https://tailwindcss.com/docs" target="_blank" rel="noopener">Tailwind docs</a> ·
+          <a href="https://daisyui.com/components/" target="_blank" rel="noopener">DaisyUI components</a> ·
+          <a href="https://animate.style/" target="_blank" rel="noopener">Animate.css list</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent" target="_blank" rel="noopener">textContent (MDN)</a> ·
+          <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/submit_event" target="_blank" rel="noopener">form submit event (MDN)</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <script type="module" src="./booth.js"></script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booth 2: The Fun House</title>
+  <link rel="stylesheet" href="./frameworks.css" />
+</head>
+<body class="min-h-screen bg-base-200">
+
+  <!-- Tent stripes made with plain Tailwind classes -->
+  <div class="h-16 border-b-8 border-yellow-400 bg-[repeating-linear-gradient(90deg,#d62839_0_40px,#fff4dc_40px_80px)]"></div>
+
+  <header class="bg-neutral text-neutral-content py-6 text-center">
+    <h1 class="text-4xl font-black uppercase tracking-widest text-yellow-400">The Fun House</h1>
+    <p class="mt-1">Three CSS frameworks, zero hand-written stylesheets.</p>
+  </header>
+
+  <main class="mx-auto max-w-5xl space-y-12 p-6">
+
+    <!-- ============ GETTING STARTED ============ -->
+    <section class="rounded-box border-4 border-dashed border-yellow-400 bg-base-100 p-6">
+      <h2 class="mb-2 text-xl font-bold">Getting started (one driver, two navigators)</h2>
+      <ol class="list-decimal space-y-1 pl-6">
+        <li><b>Driver:</b> open <code>fun-house/index.html</code> in VS Code. Bronze and Silver happen in this file. Gold is in <code>fun-house/funhouse.js</code>.</li>
+        <li>Edit and <b>save</b>. This page updates by itself, no refresh needed.</li>
+        <li><b>Navigators:</b> keep the docs open (links in every section) and read the class names out loud to the driver.</li>
+        <li>Do the tickets in order. Bronze: follow the cheat sheet in the <code>TODO BRONZE</code> comment. Silver and Gold: each has a yellow <b>"How to earn"</b> box on this page with the exact code, and a <code>TODO</code> comment in the file marks where it goes.</li>
+        <li>A class did nothing? Check the spelling: Tailwind ignores names it does not know, with no error. <code>bg-teal-500</code> works; <code>bg-teal</code> does not.</li>
+      </ol>
+    </section>
+
+    <!-- ============ BRONZE: TAILWIND ============ -->
+    <section>
+      <h2 class="mb-2 text-2xl font-bold">Bronze: Tailwind CSS</h2>
+      <p class="mb-4">Tailwind gives you tiny classes that each do one thing. You build a look by stacking them.
+        The left card is done. The right card has no classes yet. Make it look like a prize.</p>
+
+      <div class="grid gap-6 md:grid-cols-2">
+        <!-- Finished example: read each class out loud -->
+        <div class="rounded-2xl bg-red-600 p-6 text-white shadow-xl transition hover:scale-105 hover:rotate-1">
+          <p class="text-sm uppercase tracking-widest text-yellow-300">Example</p>
+          <h3 class="text-2xl font-bold">Giant Stuffed Bear</h3>
+          <p class="mt-2">Costs 50 tickets</p>
+        </div>
+
+        <!-- TODO BRONZE: add Tailwind classes to the card below.
+             EASIEST START: copy the class="..." from the example card above onto the <div> below,
+             save, then change three things (the color, the corners, the hover move) to make it yours.
+
+             Cheat sheet:
+             colors:   bg-teal-500  text-white  border-yellow-400   (shades go 50, 100, 200 ... 900, light to dark)
+             spacing:  p-6 (padding)  mt-2 (margin top)
+             shape:    rounded-2xl  shadow-xl  border-4
+             text:     text-2xl  font-bold  uppercase
+             hover:    hover:scale-105  hover:-rotate-2  transition
+             You can style the <p> and <h3> inside it too. -->
+        <div>
+          <p>Your prize</p>
+          <h3>Goldfish in a Bag</h3>
+          <p>Costs 20 tickets</p>
+        </div>
+      </div>
+
+      <p class="mt-4 text-sm">Stuck? Tailwind docs: <a class="link link-primary" href="https://tailwindcss.com/docs/background-color" target="_blank" rel="noopener">colors</a> ·
+        <a class="link link-primary" href="https://tailwindcss.com/docs/padding" target="_blank" rel="noopener">padding</a> ·
+        <a class="link link-primary" href="https://tailwindcss.com/docs/border-radius" target="_blank" rel="noopener">rounded corners</a> ·
+        <a class="link link-primary" href="https://tailwindcss.com/docs/box-shadow" target="_blank" rel="noopener">shadows</a> ·
+        <a class="link link-primary" href="https://tailwindcss.com/docs/scale" target="_blank" rel="noopener">scale on hover</a>.
+        Or use the search box on tailwindcss.com (<kbd class="kbd kbd-sm">Ctrl</kbd> <kbd class="kbd kbd-sm">K</kbd>).</p>
+    </section>
+
+    <!-- ============ SILVER: DAISYUI ============ -->
+    <section>
+      <h2 class="mb-2 text-2xl font-bold">Silver: DaisyUI</h2>
+      <p class="mb-4">DaisyUI turns one class into a whole component. <code>class="btn"</code> is a full button.
+        It also ships themes, so one click restyles the entire page. Follow the steps in the yellow box below.</p>
+
+      <!-- Theme switcher: pure CSS, no JavaScript. Click one! -->
+      <div class="mb-6 flex flex-wrap gap-2">
+        <input type="radio" name="theme" class="btn theme-controller" aria-label="Cupcake" value="cupcake" />
+        <input type="radio" name="theme" class="btn theme-controller" aria-label="Synthwave" value="synthwave" />
+        <input type="radio" name="theme" class="btn theme-controller" aria-label="Retro" value="retro" />
+        <input type="radio" name="theme" class="btn theme-controller" aria-label="Halloween" value="halloween" />
+        <!-- TODO SILVER step 1: paste your two new theme buttons on the next line (see the yellow box on the page) -->
+      </div>
+
+      <div class="flex flex-wrap gap-6">
+        <!-- A DaisyUI card. Notice how few classes it takes. -->
+        <div class="card w-72 bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h3 class="card-title">Ring Toss <span class="badge badge-secondary">HOT</span></h3>
+            <p>Land 3 rings, win a prize.</p>
+            <div class="card-actions justify-end">
+              <button class="btn btn-primary">Play</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TODO SILVER step 2: paste your two new cards on the next line (see the yellow box on the page) -->
+
+      </div>
+
+      <!-- TODO SILVER step 3: paste your extra DaisyUI component on the next line (see the yellow box on the page) -->
+
+
+      <!-- ---- Silver instructions (you do not edit this box) ---- -->
+      <div class="mt-8 space-y-5 rounded-box border-4 border-dashed border-yellow-400 bg-base-100 p-6">
+        <h3 class="text-xl font-bold">How to earn Silver</h3>
+
+        <div>
+          <h4 class="font-bold">First, decode the Ring Toss card</h4>
+          <p class="text-sm">DaisyUI classes build the component. Tailwind classes (like <code>w-72</code>) tweak it. Both live in the same <code>class="..."</code>.</p>
+          <div class="overflow-x-auto">
+            <table class="table table-sm mt-2">
+              <thead><tr><th>Class</th><th>From</th><th>What it does</th></tr></thead>
+              <tbody>
+                <tr><td><code>card</code></td><td>DaisyUI</td><td>Makes the box a card (rounded corners, layout)</td></tr>
+                <tr><td><code>card-body</code></td><td>DaisyUI</td><td>Adds the padding inside the card</td></tr>
+                <tr><td><code>card-title</code></td><td>DaisyUI</td><td>Big bold heading for the card</td></tr>
+                <tr><td><code>card-actions justify-end</code></td><td>DaisyUI + Tailwind</td><td>A row for buttons, pushed to the right</td></tr>
+                <tr><td><code>badge badge-secondary</code></td><td>DaisyUI</td><td>The little "HOT" pill. <code>badge</code> = the shape, <code>badge-secondary</code> = its color</td></tr>
+                <tr><td><code>btn btn-primary</code></td><td>DaisyUI</td><td>A full button. <code>btn</code> = the shape, <code>btn-primary</code> = its color</td></tr>
+                <tr><td><code>w-72</code></td><td>Tailwind</td><td>Width (72 × 4px = 288px)</td></tr>
+                <tr><td><code>bg-base-100</code></td><td>DaisyUI color</td><td>The theme's "page background" color, so it changes with the theme</td></tr>
+                <tr><td><code>shadow-xl</code></td><td>Tailwind</td><td>A big drop shadow</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-2 text-sm"><b>The pattern:</b> a base class (<code>btn</code>, <code>badge</code>, <code>alert</code>) plus an optional
+            <b>color</b> (<code>-primary</code>, <code>-secondary</code>, <code>-accent</code>, <code>-neutral</code>, <code>-info</code>,
+            <code>-success</code>, <code>-warning</code>, <code>-error</code>) and <b>size</b> (<code>-xs</code>, <code>-sm</code>,
+            <code>-lg</code>, <code>-xl</code>). So <code>btn btn-accent btn-lg</code> is a large accent-colored button.
+            <span class="badge badge-primary">badge-primary</span>
+            <span class="badge badge-accent">badge-accent</span>
+            <span class="badge badge-warning">badge-warning</span>
+            <button class="btn btn-xs btn-secondary">btn-secondary btn-xs</button>
+            <button class="btn btn-xs btn-outline">btn-outline</button></p>
+        </div>
+
+        <div>
+          <h4 class="font-bold">Step 1: two more theme buttons</h4>
+          <p class="text-sm">Find the comment <code>TODO SILVER step 1</code>. Copy the Halloween line, paste it twice, and change the
+            two words shown in <b>bold</b> below. <code>aria-label</code> is the text on the button; <code>value</code> is the real theme name and must be lowercase.</p>
+          <pre class="mt-2 overflow-x-auto rounded-box bg-neutral p-4 text-sm text-neutral-content"><code>&lt;input type="radio" name="theme" class="btn theme-controller" aria-label="<b class="text-yellow-300">Valentine</b>" value="<b class="text-yellow-300">valentine</b>" /&gt;
+&lt;input type="radio" name="theme" class="btn theme-controller" aria-label="<b class="text-yellow-300">Cyberpunk</b>" value="<b class="text-yellow-300">cyberpunk</b>" /&gt;</code></pre>
+          <p class="mt-1 text-sm"><b>Check:</b> six theme buttons, and clicking Cyberpunk turns the page bright yellow.</p>
+        </div>
+
+        <div>
+          <h4 class="font-bold">Step 2: two more booth cards</h4>
+          <p class="text-sm">In VS Code, select the Ring Toss card from <code>&lt;div class="card w-72 ..."&gt;</code> down to its last
+            <code>&lt;/div&gt;</code> (9 lines). Copy it and paste it at <code>TODO SILVER step 2</code>, twice. In each copy, change:</p>
+          <ul class="list-disc pl-6 text-sm">
+            <li>the <b>words</b>: booth name, badge text, description</li>
+            <li>one <b>color class</b>: <code>badge-secondary</code> → <code>badge-accent</code>, and <code>btn-primary</code> → <code>btn-secondary</code></li>
+          </ul>
+          <pre class="mt-2 overflow-x-auto rounded-box bg-neutral p-4 text-sm text-neutral-content"><code>&lt;div class="card w-72 bg-base-100 shadow-xl"&gt;
+  &lt;div class="card-body"&gt;
+    &lt;h3 class="card-title"&gt;<b class="text-yellow-300">Dunk Tank</b> &lt;span class="badge <b class="text-yellow-300">badge-accent</b>"&gt;<b class="text-yellow-300">NEW</b>&lt;/span&gt;&lt;/h3&gt;
+    &lt;p&gt;<b class="text-yellow-300">Hit the target, dunk the TA.</b>&lt;/p&gt;
+    &lt;div class="card-actions justify-end"&gt;
+      &lt;button class="btn <b class="text-yellow-300">btn-secondary</b>"&gt;Play&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+          <p class="mt-1 text-sm"><b>Check:</b> three cards side by side, each with a different badge or button color.</p>
+        </div>
+
+        <div>
+          <h4 class="font-bold">Step 3: one extra component (pick one)</h4>
+          <p class="text-sm">Copy one snippet, paste it at <code>TODO SILVER step 3</code>, then change the words and numbers.
+            Want something else? Every component on <a class="link link-primary" href="https://daisyui.com/components/" target="_blank" rel="noopener">daisyui.com/components</a>
+            has a code tab you can copy the same way.</p>
+          <div class="mt-2 grid gap-4 md:grid-cols-2">
+            <div>
+              <p class="text-sm font-bold">Alert: a banner message</p>
+              <pre class="overflow-x-auto rounded-box bg-neutral p-3 text-xs text-neutral-content"><code>&lt;div role="alert" class="alert alert-info"&gt;
+  &lt;span&gt;The Prize Counter opens after the Grand Finale!&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+              <p class="text-xs">Try <code>alert-success</code>, <code>alert-warning</code>, <code>alert-error</code>.</p>
+            </div>
+            <div>
+              <p class="text-sm font-bold">Progress bar: tickets earned</p>
+              <pre class="overflow-x-auto rounded-box bg-neutral p-3 text-xs text-neutral-content"><code>&lt;p&gt;Tickets: 40 / 100&lt;/p&gt;
+&lt;progress class="progress progress-primary w-56" value="40" max="100"&gt;&lt;/progress&gt;</code></pre>
+              <p class="text-xs">Change <code>value</code> to fill it more.</p>
+            </div>
+            <div>
+              <p class="text-sm font-bold">Stat: a big number</p>
+              <pre class="overflow-x-auto rounded-box bg-neutral p-3 text-xs text-neutral-content"><code>&lt;div class="stats shadow"&gt;
+  &lt;div class="stat"&gt;
+    &lt;div class="stat-title"&gt;Total tickets&lt;/div&gt;
+    &lt;div class="stat-value text-primary"&gt;128&lt;/div&gt;
+    &lt;div class="stat-desc"&gt;Up 12 since lunch&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+            <div>
+              <p class="text-sm font-bold">Rating: clickable stars</p>
+              <pre class="overflow-x-auto rounded-box bg-neutral p-3 text-xs text-neutral-content"><code>&lt;div class="rating"&gt;
+  &lt;input type="radio" name="booth-rating" class="mask mask-star bg-orange-400" aria-label="1 star" /&gt;
+  &lt;input type="radio" name="booth-rating" class="mask mask-star bg-orange-400" aria-label="2 stars" /&gt;
+  &lt;input type="radio" name="booth-rating" class="mask mask-star bg-orange-400" aria-label="3 stars" checked /&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+          </div>
+          <p class="mt-2 text-sm"><b>Check:</b> click every theme button. Your cards and your new component change colors too, with zero extra CSS. That is the point of a component framework.</p>
+        </div>
+
+        <p class="text-sm"><b>Stuck?</b> Nothing showed up? Make sure you pasted <i>between</i> tags, not inside a <code>&lt;!-- comment --&gt;</code>.
+          Docs: <a class="link link-primary" href="https://daisyui.com/components/card/" target="_blank" rel="noopener">card</a> ·
+          <a class="link link-primary" href="https://daisyui.com/components/button/" target="_blank" rel="noopener">button</a> ·
+          <a class="link link-primary" href="https://daisyui.com/components/badge/" target="_blank" rel="noopener">badge</a> ·
+          <a class="link link-primary" href="https://daisyui.com/docs/themes/" target="_blank" rel="noopener">theme names</a></p>
+      </div>
+    </section>
+
+    <!-- ============ GOLD: ANIMATE.CSS ============ -->
+    <section>
+      <h2 class="mb-2 text-2xl font-bold">Gold: Animate.css</h2>
+      <p class="mb-4">Animate.css is a library of ready-made animations. Add <code>animate__animated</code> plus an
+        animation name and it plays. Warm up in this HTML file, then finish in <code>fun-house/funhouse.js</code>.</p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-6">
+        <!-- TODO GOLD warm-up: change animate__bounce on the next line to another animation name -->
+        <div class="animate__animated animate__bounce animate__infinite animate__slow text-6xl font-black text-primary">WIN!</div>
+
+        <!-- TODO GOLD: these prizes should play an animation when clicked. See funhouse.js -->
+        <button class="prize btn btn-lg btn-accent">Teddy Bear</button>
+        <button class="prize btn btn-lg btn-accent">Cotton Candy</button>
+        <button class="prize btn btn-lg btn-accent">Kazoo</button>
+      </div>
+
+      <!-- ---- Gold instructions (you do not edit this box) ---- -->
+      <div class="mt-8 space-y-5 rounded-box border-4 border-dashed border-yellow-400 bg-base-100 p-6">
+        <h3 class="text-xl font-bold">How to earn Gold</h3>
+
+        <div>
+          <h4 class="font-bold">First, decode the bouncing WIN!</h4>
+          <div class="overflow-x-auto">
+            <table class="table table-sm mt-2">
+              <thead><tr><th>Class</th><th>What it does</th><th>Required?</th></tr></thead>
+              <tbody>
+                <tr><td><code>animate__animated</code></td><td>The ON switch. Without it, nothing moves.</td><td>Yes, always</td></tr>
+                <tr><td><code>animate__bounce</code></td><td><b>Which</b> animation to play</td><td>Yes, exactly one</td></tr>
+                <tr><td><code>animate__infinite</code></td><td>Repeat forever (or <code>animate__repeat-2</code>, <code>animate__repeat-3</code>)</td><td>Optional</td></tr>
+                <tr><td><code>animate__slow</code></td><td>Speed: <code>animate__slower</code>, <code>animate__slow</code>, <code>animate__fast</code>, <code>animate__faster</code></td><td>Optional</td></tr>
+                <tr><td><code>animate__delay-1s</code></td><td>Wait before starting (<code>-2s</code>, <code>-3s</code> ... up to <code>-5s</code>)</td><td>Optional</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-2 text-sm"><b>Every class starts with <code>animate__</code> (two underscores).</b> Names are case-sensitive:
+            <code>rubberBand</code> works, <code>rubberband</code> does nothing. Good ones to try:
+            <code>tada</code> <code>rubberBand</code> <code>jello</code> <code>heartBeat</code> <code>wobble</code> <code>swing</code>
+            <code>flip</code> <code>headShake</code> <code>bounceIn</code> <code>zoomIn</code>. Full list with previews:
+            <a class="link link-primary" href="https://animate.style/" target="_blank" rel="noopener">animate.style</a>.</p>
+        </div>
+
+        <div>
+          <h4 class="font-bold">Warm-up (HTML only, 1 minute)</h4>
+          <p class="text-sm">Find <code>TODO GOLD warm-up</code> in this file. On the WIN! line, change one class and save:</p>
+          <pre class="mt-2 overflow-x-auto rounded-box bg-neutral p-4 text-sm text-neutral-content"><code>before:  class="animate__animated <b class="text-yellow-300">animate__bounce</b> animate__infinite animate__slow ..."
+after:   class="animate__animated <b class="text-yellow-300">animate__rubberBand</b> animate__infinite animate__slow ..."</code></pre>
+          <p class="mt-1 text-sm"><b>Check:</b> WIN! stretches instead of bouncing. Now you know animations are <i>just classes</i>.</p>
+        </div>
+
+        <div>
+          <h4 class="font-bold">Step 1: play an animation on click (in <code>funhouse.js</code>)</h4>
+          <p class="text-sm">The prizes have no animation classes yet. We want JavaScript to <b>add</b> them when you click. That is what
+            <code>prize.classList.add(...)</code> does: it is like typing those classes into the HTML, live. Open
+            <code>fun-house/funhouse.js</code>, find <code>TODO GOLD step 1</code>, and uncomment the line:</p>
+          <pre class="mt-2 overflow-x-auto rounded-box bg-neutral p-4 text-sm text-neutral-content"><code>prize.classList.add('animate__animated', 'animate__tada');</code></pre>
+          <p class="mt-1 text-sm"><b>Check:</b> click Teddy Bear and it does a tada. Click it <i>again</i>... nothing. On to step 2.</p>
+        </div>
+
+        <div>
+          <h4 class="font-bold">Step 2: make it replay</h4>
+          <p class="text-sm">After the first click the button still <i>has</i> the classes, so the browser thinks the animation is done.
+            We take them off when the animation ends, so the next click can add them again.
+            Find <code>TODO GOLD step 2</code> and uncomment the three lines:</p>
+          <pre class="mt-2 overflow-x-auto rounded-box bg-neutral p-4 text-sm text-neutral-content"><code>prize.addEventListener('animationend', () =&gt; {
+  prize.classList.remove('animate__animated', 'animate__tada');
+}, { once: true });</code></pre>
+          <p class="mt-1 text-sm"><b>Check:</b> every click on any prize plays the tada again.</p>
+        </div>
+
+        <div>
+          <h4 class="font-bold">Bonus: a different animation per prize</h4>
+          <p class="text-sm">Add <code>data-anim="jello"</code> (any name) to each prize button in this file. The bottom of <code>funhouse.js</code> shows how to read it.</p>
+        </div>
+
+        <p class="text-sm"><b>Stuck?</b> Nothing moves → check for two underscores and the exact capital letters.
+          Red text in the Console (<kbd class="kbd kbd-sm">Cmd</kbd>+<kbd class="kbd kbd-sm">Option</kbd>+<kbd class="kbd kbd-sm">J</kbd>) → a quote or bracket is missing on that line.
+          Docs: <a class="link link-primary" href="https://animate.style/#usage" target="_blank" rel="noopener">Animate.css usage</a> ·
+          <a class="link link-primary" href="https://developer.mozilla.org/en-US/docs/Web/API/Element/classList" target="_blank" rel="noopener">classList on MDN</a></p>
+      </div>
+    </section>
+
+    <!-- ============ BONUS: FRAMEWORK TOUR ============ -->
+    <section class="rounded-box bg-base-100 p-6">
+      <h2 class="mb-2 text-2xl font-bold">Bonus: The Framework Tour</h2>
+      <p>Pick one framework you have never used, open its docs, and rebuild the Ring Toss card with it in a scratch file.
+        Be ready to tell the class one thing you liked and one thing you did not.</p>
+      <ul class="mt-3 list-disc pl-6">
+        <li><a class="link font-bold" href="https://getbootstrap.com/docs/5.3/components/card/" target="_blank" rel="noopener">Bootstrap</a>: the classic. Components first, huge community.</li>
+        <li><a class="link font-bold" href="https://ui.shadcn.com/docs/components/card" target="_blank" rel="noopener">shadcn/ui</a>: React components you copy into your own project. Great fit for our React work.</li>
+        <li><a class="link font-bold" href="https://picocss.com/docs/card" target="_blank" rel="noopener">Pico.css</a>: "classless". Write plain HTML and it already looks good.</li>
+        <li><a class="link font-bold" href="https://bulma.io/documentation/components/card/" target="_blank" rel="noopener">Bulma</a>: component framework with no JavaScript at all.</li>
+      </ul>
+      <p class="mt-3 text-sm">Fastest way to try one: make a new <code>tour.html</code> outside this project, paste the framework's CDN
+        <code>&lt;link&gt;</code> from its "Getting started" page into the <code>&lt;head&gt;</code>, then paste its card example into the body.</p>
+    </section>
+  </main>
+
+  <script type="module" src="./funhouse.js"></script>
+</body>
+</html>

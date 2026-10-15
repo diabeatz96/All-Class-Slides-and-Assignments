@@ -1,0 +1,17 @@
+/* BOOTH 2: THE FUN HOUSE (CSS FRAMEWORKS)
+   This tiny file loads three frameworks. That is the whole point of a framework:
+   someone else already wrote thousands of lines of CSS so you do not have to.
+
+   1. Tailwind CSS  -> small "utility" classes you stack in your HTML (bg-red-500, p-4, rounded-xl)
+   2. DaisyUI       -> ready-made components built on Tailwind (btn, card, badge, modal) plus themes
+   3. Animate.css   -> drop-in animations you turn on by adding a class (animate__bounce)
+*/
+
+@import "tailwindcss";
+@import "animate.css";
+
+/* DaisyUI is a Tailwind plugin. List the themes you want to be able to switch between.
+   Full list of theme names: https://daisyui.com/docs/themes/  */
+@plugin "daisyui" {
+  themes: cupcake --default, synthwave, retro, halloween, valentine, cyberpunk;
+}

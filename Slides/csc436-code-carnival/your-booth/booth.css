@@ -1,0 +1,15 @@
+/* Your booth has all three frameworks loaded, same as the Fun House. */
+@import "tailwindcss";
+@import "animate.css";
+@plugin "daisyui" {
+  themes: cupcake --default, synthwave, retro, halloween, valentine, cyberpunk;
+}
+
+#stage {
+  width: 100%;
+  height: 360px;
+  border: 6px solid #f4b400;
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
