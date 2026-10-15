@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grand Finale: Build Your Own Booth</title>
+  <link rel="stylesheet" href="/carnival.css" />
+  <link rel="stylesheet" href="./booth.css" />
+</head>
+<body>
+  <div class="tent-top"></div>
+  <header class="marquee">
+    <!-- STEP 0: replace both TODOs with your booth name and your team's first names -->
+    <h1 id="booth-name" class="font-black">TODO: Your Booth Name</h1>
+    <p>Team: TODO names</p>
+  </header>
+
+  <main>
+    <div class="milestones">
+      <h2 class="text-xl font-bold">Booth Permit Requirements (25 minutes)</h2>
+      <p>Do Step 0 first (booth name and team names in the header). Then earn as many permits as you can. Each one is checked by the "Done when" line.</p>
+      <ul>
+        <li><span class="ticket">Bronze</span> <b>One framework attraction.</b> Pick ONE:
+          a Tailwind-styled prize card (copy your Fun House Bronze card),
+          a DaisyUI component or theme switcher (copy from the Fun House Silver section), or
+          an Animate.css effect on click (copy <code>funhouse.js</code>).
+          Put it inside <code>&lt;section id="attraction"&gt;</code> below.
+          <br /><b>Done when:</b> the volunteer can see it, and for Animate.css, it replays on every click.</li>
+        <li><span class="ticket">Silver</span> <b>One Three.js attraction in the #stage.</b> Open <code>booth.js</code> and
+          replace the yellow placeholder with your own ride, game, or prize.
+          <br /><b>Done when:</b> the stage shows at least 2 meshes you made (not the placeholder) and at least one of them moves.</li>
+        <li><span class="ticket">Gold</span> <b>One safety feature.</b> The visitor form below is already built.
+          Follow the GOLD steps in <code>booth.js</code> to validate it and show entries with <code>textContent</code>.
+          <br /><b>Done when:</b> a blank entry shows an error, an entry over 100 characters shows an error, and
+          <code>&lt;b&gt;hi&lt;/b&gt;</code> shows up as plain text with the tags visible.</li>
+        <li><span class="ticket">Bonus</span> <b>Make the 3D and the page talk.</b> Pick one recipe at the bottom of <code>booth.js</code>.
+          <br /><b>Done when:</b> clicking a 3D object changes the page, OR submitting the form changes the 3D scene.</li>
+      </ul>
+      <p>Need an idea? Dunk Tank, Fortune Teller, Strongman Bell, or Cotton Candy (see the slides).</p>
+    </div>
+
+    <!-- BRONZE: put your framework attraction in here -->
+    <section id="attraction"></section>
+
+    <!-- SILVER: booth.js draws your Three.js scene into this box -->
+    <div id="stage"></div>
+
+    <!-- GOLD: the form is ready. Your job is the JavaScript in booth.js. Do not rename these ids. -->
+    <section id="visitor-area">
+      <h2>Visitor Wall</h2>
+      <form id="visitor-form" novalidate>
+        <input id="visitor-input" placeholder="Say something about our booth" autocomplete="off" />
+        <button type="submit">Post</button>
+      </form>
+      <p id="visitor-error" role="alert"></p>
+      <ul id="visitor-list"></ul>
+    </section>
+
+    <p><a href="/">Back to the Midway</a></p>
+  </main>
+
+  <script type="module" src="./booth.js"></script>
+</body>
+</html>

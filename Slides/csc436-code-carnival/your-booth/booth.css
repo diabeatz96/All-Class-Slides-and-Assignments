@@ -1,0 +1,28 @@
+/* Your booth has all three frameworks loaded, same as the Fun House. */
+@import "tailwindcss";
+@import "animate.css";
+@plugin "daisyui" {
+  themes: cupcake --default, synthwave, retro, halloween, valentine, cyberpunk;
+}
+
+#stage {
+  width: 100%;
+  height: 360px;
+  border: 6px solid #f4b400;
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+/* Starter look for the Gold visitor wall. Restyle it with Tailwind or DaisyUI if you like. */
+#visitor-area {
+  background: white;
+  border: 4px solid var(--teal);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+#visitor-form { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+#visitor-input { flex: 1 1 16rem; font: inherit; padding: 0.5rem; border: 2px solid var(--navy); border-radius: 6px; }
+#visitor-form button { font: inherit; font-weight: bold; padding: 0.5rem 1rem; background: var(--red); color: var(--cream); border: 0; border-radius: 6px; cursor: pointer; }
+#visitor-error { color: var(--red); font-weight: bold; min-height: 1.2em; }
+#visitor-list li { border-top: 2px dashed var(--gold); padding: 0.4rem 0; list-style: none; }

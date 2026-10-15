@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booth 2: The Fun House</title>
+  <link rel="stylesheet" href="./frameworks.css" />
+</head>
+<body class="min-h-screen bg-base-200">
+
+  <!-- Tent stripes made with plain Tailwind classes -->
+  <div class="h-16 border-b-8 border-yellow-400 bg-[repeating-linear-gradient(90deg,#d62839_0_40px,#fff4dc_40px_80px)]"></div>
+
+  <header class="bg-neutral text-neutral-content py-6 text-center">
+    <h1 class="text-4xl font-black uppercase tracking-widest text-yellow-400">The Fun House</h1>
+    <p class="mt-1">Three CSS frameworks, zero hand-written stylesheets.</p>
+    <a href="/" class="link mt-2 inline-block text-yellow-300">Back to the Midway</a>
+  </header>
+
+  <main class="mx-auto max-w-5xl space-y-12 p-6">
+
+    <!-- How to work this booth. Fun House teams: one driver types, two navigators read the steps. -->
+    <div role="alert" class="alert alert-info">
+      <span><b>How this booth works:</b> you only edit <code>fun-house/index.html</code> (Bronze, Silver) and
+        <code>fun-house/funhouse.js</code> (Gold). Save and the page updates by itself. Each tier ends with
+        <b>Done when</b>. Show the volunteer that exact thing to collect your tickets.</span>
+    </div>
+
+    <!-- ============ BRONZE: TAILWIND ============ -->
+    <section>
+      <h2 class="mb-2 text-2xl font-bold">Bronze: Tailwind CSS (1 ticket each)</h2>
+      <p class="mb-4">Tailwind gives you tiny classes that each do one thing. You build a look by stacking them.
+        The left card is done. The right card has no classes yet. Make it look like a prize.</p>
+      <ol class="mb-4 list-decimal space-y-1 pl-6">
+        <li>Find the <code>TODO BRONZE</code> comment in <code>index.html</code>. The plain card is right below it.</li>
+        <li>Add a <code>class="..."</code> to the outer <code>&lt;div&gt;</code> with at least one class from <b>every</b> row of the cheat sheet.</li>
+        <li>Style the three text lines inside it too: give the <code>&lt;h3&gt;</code> a size and weight, like <code>text-2xl font-bold</code>.</li>
+      </ol>
+      <p class="mb-4 font-bold">Done when: your card has a background color, padding, rounded corners, a shadow, styled
+        text, and it grows or tilts when you hover over it. It must not look like a copy of the red example.</p>
+
+      <div class="grid gap-6 md:grid-cols-2">
+        <!-- Finished example: read each class out loud -->
+        <div class="rounded-2xl bg-red-600 p-6 text-white shadow-xl transition hover:scale-105 hover:rotate-1">
+          <p class="text-sm uppercase tracking-widest text-yellow-300">Example</p>
+          <h3 class="text-2xl font-bold">Giant Stuffed Bear</h3>
+          <p class="mt-2">Costs 50 tickets</p>
+        </div>
+
+        <!-- TODO BRONZE: add Tailwind classes to this card. Use at least ONE class from EVERY row:
+             color:    bg-teal-500  bg-purple-600  text-white  border-yellow-400
+                       (colors come in 50, 100, 200 ... 900. Bigger number = darker)
+             spacing:  p-6 (padding all sides)  px-4 (left/right)  mt-2 (margin top)
+             shape:    rounded-2xl  shadow-xl  border-4  (border-4 needs a border-COLOR too)
+             text:     text-2xl  font-bold  uppercase  tracking-widest  text-center
+             hover:    transition  hover:scale-105  hover:-rotate-2  hover:bg-teal-400
+                       (put "transition" on the card too, or the hover snaps instead of sliding)
+             Docs: tailwindcss.com/docs (search box at the top) -->
+        <div>
+          <p>Your prize</p>
+          <h3>Goldfish in a Bag</h3>
+          <p>Costs 20 tickets</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SILVER: DAISYUI ============ -->
+    <section>
+      <h2 class="mb-2 text-2xl font-bold">Silver: DaisyUI (2 tickets each)</h2>
+      <p class="mb-4">DaisyUI turns one class into a whole component. <code>class="btn"</code> is a full button.
+        It also ships themes, so one click restyles the entire page.</p>
+      <ol class="mb-4 list-decimal space-y-1 pl-6">
+        <li><b>Themes:</b> find <code>TODO SILVER S1</code>. Copy the Halloween line twice. Change one copy to
+          <code>value="valentine"</code> / <code>aria-label="Valentine"</code> and the other to
+          <code>value="cyberpunk"</code> / <code>aria-label="Cyberpunk"</code>. The value must match a theme name in
+          <code>frameworks.css</code> exactly, all lowercase.</li>
+        <li><b>Cards:</b> find <code>TODO SILVER S2</code>. Copy the whole Ring Toss card (from <code>&lt;div class="card</code>
+          down to its closing <code>&lt;/div&gt;</code>) twice. Make one about the <b>Fun House</b> and one about the
+          <b>Safety Inspector</b>. Give each a different badge (<code>badge-accent</code>, <code>badge-info</code>) and
+          button (<code>btn-secondary</code>, <code>btn-accent</code>).</li>
+        <li><b>One more component:</b> find <code>TODO SILVER S3</code> and paste in one of the starter snippets there.</li>
+      </ol>
+      <p class="mb-4 font-bold">Done when: there are 6 theme buttons and each one restyles the whole page, there are 3
+        booth cards side by side, and your extra component shows up and changes color with the theme.</p>
+
+      <!-- Theme switcher: pure CSS, no JavaScript. Click one! -->
+      <div class="mb-6 flex flex-wrap gap-2">
+        <input type="radio" name="theme" class="btn theme-controller" aria-label="Cupcake" value="cupcake" />
+        <input type="radio" name="theme" class="btn theme-controller" aria-label="Synthwave" value="synthwave" />
+        <input type="radio" name="theme" class="btn theme-controller" aria-label="Retro" value="retro" />
+        <input type="radio" name="theme" class="btn theme-controller" aria-label="Halloween" value="halloween" />
+        <!-- TODO SILVER S1: add the Valentine and Cyberpunk buttons right here -->
+      </div>
+
+      <div class="flex flex-wrap gap-6">
+        <!-- A DaisyUI card. Notice how few classes it takes. -->
+        <div class="card w-72 bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h3 class="card-title">Ring Toss <span class="badge badge-secondary">HOT</span></h3>
+            <p>Land 3 rings, win a prize.</p>
+            <div class="card-actions justify-end">
+              <button class="btn btn-primary">Play</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TODO SILVER S2: paste your Fun House card and Safety Inspector card right here -->
+      </div>
+
+      <!-- TODO SILVER S3: paste ONE of these below this comment (more components at daisyui.com/components)
+
+           Progress bar:
+             <progress class="progress progress-primary mt-6 w-72" value="40" max="100"></progress>
+
+           Alert:
+             <div role="alert" class="alert alert-warning mt-6"><span>The Prize Counter opens at 1:45!</span></div>
+
+           Stat:
+             <div class="stats mt-6 shadow"><div class="stat">
+               <div class="stat-title">Tickets earned</div>
+               <div class="stat-value">12</div>
+             </div></div>
+
+           Star rating (every star in one group needs the same name):
+             <div class="rating mt-6">
+               <input type="radio" name="booth-rating" class="mask mask-star-2 bg-orange-400" aria-label="1 star" />
+               <input type="radio" name="booth-rating" class="mask mask-star-2 bg-orange-400" aria-label="2 stars" />
+               <input type="radio" name="booth-rating" class="mask mask-star-2 bg-orange-400" aria-label="3 stars" checked />
+             </div>
+      -->
+    </section>
+
+    <!-- ============ GOLD: ANIMATE.CSS ============ -->
+    <section>
+      <h2 class="mb-2 text-2xl font-bold">Gold: Animate.css (3 tickets each)</h2>
+      <p class="mb-4">Animate.css is a library of ready-made animations. Add <code>animate__animated</code> plus an
+        animation name and it plays. Browse them all at animate.style</p>
+      <ol class="mb-4 list-decimal space-y-1 pl-6">
+        <li>Open <code>fun-house/funhouse.js</code> and do steps G1 and G2 inside the click handler.</li>
+        <li>You do not need to change any HTML for Gold. The three buttons below already have <code>class="prize"</code>.</li>
+      </ol>
+      <p class="mb-4 font-bold">Done when: clicking any prize plays an animation, and clicking the same prize again
+        plays it again (not just the first time).</p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-6">
+        <div class="animate__animated animate__bounce animate__infinite animate__slow text-6xl font-black text-primary">WIN!</div>
+
+        <button class="prize btn btn-lg btn-accent">Teddy Bear</button>
+        <button class="prize btn btn-lg btn-accent">Cotton Candy</button>
+        <button class="prize btn btn-lg btn-accent">Kazoo</button>
+      </div>
+    </section>
+
+    <!-- ============ BONUS: FRAMEWORK TOUR ============ -->
+    <section class="rounded-box bg-base-100 p-6">
+      <h2 class="mb-2 text-2xl font-bold">Bonus: The Framework Tour (5 tickets per team)</h2>
+      <ol class="mt-3 list-decimal space-y-1 pl-6">
+        <li>Open <a class="link" href="./tour.html">fun-house/tour.html</a> in your browser and in your editor. It has a plain Ring Toss card.</li>
+        <li>Pick ONE framework you have never used. Uncomment its <code>&lt;link&gt;</code> line in <code>tour.html</code>.</li>
+        <li>Open that framework's card docs (links are in <code>tour.html</code>) and add its classes so the card looks like a real card.</li>
+        <li>Write down one thing you liked and one thing you did not. You will tell the class.</li>
+      </ol>
+      <p class="mt-3 font-bold">Done when: tour.html shows the Ring Toss card styled by the new framework, and your team can name one like and one dislike.</p>
+      <ul class="mt-3 list-disc pl-6">
+        <li><b>Bootstrap</b> (getbootstrap.com): the classic. Components first, huge community.</li>
+        <li><b>Pico.css</b> (picocss.com): "classless". Write plain HTML and it already looks good.</li>
+        <li><b>Bulma</b> (bulma.io): component framework with no JavaScript at all.</li>
+        <li><b>shadcn/ui</b> (ui.shadcn.com): React components you copy into your own project. It needs React, so it
+          will not work in tour.html. Read its Card page and compare it to DaisyUI instead.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script type="module" src="./funhouse.js"></script>
+</body>
+</html>

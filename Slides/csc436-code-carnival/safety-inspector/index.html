@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booth 3: The Safety Inspector</title>
+  <link rel="stylesheet" href="/carnival.css" />
+  <style>
+    .guestbook { background: white; border: 4px solid var(--teal); border-radius: 12px; padding: 1rem 1.25rem; }
+    .guestbook form { display: grid; gap: 0.5rem; margin-bottom: 1rem; }
+    .guestbook input, .guestbook textarea { font: inherit; padding: 0.5rem; border: 2px solid var(--navy); border-radius: 6px; }
+    .guestbook button { font: inherit; font-weight: bold; padding: 0.6rem; background: var(--red); color: var(--cream); border: 0; border-radius: 6px; cursor: pointer; }
+    .entry { border-top: 2px dashed var(--gold); padding: 0.5rem 0; }
+    .entry strong { color: var(--red); }
+    #error { color: var(--red); font-weight: bold; min-height: 1.2em; }
+    .inspection { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .card { background: white; border: 3px solid var(--navy); border-radius: 10px; padding: 0.75rem 1rem; }
+    .card h3 { margin: 0 0 0.4rem; color: var(--navy); }
+    code { background: #f1ead6; padding: 0 0.25rem; border-radius: 4px; overflow-wrap: anywhere; }
+    .milestones ol { padding-left: 1.2rem; }
+    .done { font-weight: bold; }
+    .back { color: var(--gold); }
+  </style>
+</head>
+<body>
+  <div class="tent-top"></div>
+  <header class="marquee">
+    <h1>The Safety Inspector</h1>
+    <p>No ride opens until the inspector signs off. <a class="back" href="/">Back to the Midway</a></p>
+  </header>
+
+  <main>
+    <div class="milestones">
+      <h2>Booth Tickets</h2>
+      <p>Do these in order. Every step also appears as a comment in <code>safety-inspector/guestbook.js</code>.</p>
+      <ul>
+        <li>
+          <span class="ticket">Bronze</span> <b>See why we use <code>textContent</code></b> (1 ticket)
+          <ol>
+            <li>Sign the guestbook below with name <code>Ada</code> and message <code>&lt;b&gt;Hello&lt;/b&gt;</code>. The tags show as plain text.</li>
+            <li>In <code>guestbook.js</code>, set <code>SAFE_MODE = false</code> and save. Sign with <code>&lt;b&gt;Hello&lt;/b&gt;</code> again. It is now bold.</li>
+            <li>Still unsafe, sign with <code>&lt;img src="x" onerror="alert('The sign is talking!')"&gt;</code>. A popup runs. That is XSS.</li>
+            <li>Set <code>SAFE_MODE = true</code>, save, and try the same message. It is plain text again.</li>
+          </ol>
+          <p class="done">Done when: <code>SAFE_MODE</code> is <code>true</code> again and you can tell the inspector in one sentence why
+            <code>textContent</code> stopped the popup and <code>innerHTML</code> did not.</p>
+        </li>
+        <li>
+          <span class="ticket">Silver</span> <b>Write <code>validate()</code></b> (2 tickets)
+          <ol>
+            <li>Add <code>.trim()</code> to both values in the submit handler.</li>
+            <li>Name empty: return <code>'Please enter a name.'</code></li>
+            <li>Message empty or over 280 characters: return <code>'Message must be 1 to 280 characters.'</code></li>
+            <li>Otherwise return <code>null</code>.</li>
+            <li>Press F12, open the Console, type <code>checkSilver()</code> and press Enter.</li>
+          </ol>
+          <p class="done">Done when: <code>checkSilver()</code> prints "All 7 Silver checks passed".</p>
+        </li>
+        <li>
+          <span class="ticket">Gold</span> <b>Inspect five rides</b> (3 tickets)
+          <ol>
+            <li>Open <code>safety-inspector/clipboard.md</code>. It has one section per Inspection Card below.</li>
+            <li>For each card, fill in all three lines: <b>What is wrong</b>, <b>What could happen</b>, and <b>The safe fix</b>.</li>
+            <li>Each safe fix must answer every question listed under that card. A fix that just says "be careful" does not count.</li>
+          </ol>
+          <p class="done">Done when: all 15 lines in clipboard.md are filled in and the inspector signs off on each card.</p>
+        </li>
+        <li>
+          <span class="ticket">Bonus</span> <b>Row Level Security</b> (5 tickets per team)
+          <ol>
+            <li>Read the table and the starter policy at the bottom of <code>guestbook.js</code>.</li>
+            <li>In the Bonus section of <code>clipboard.md</code>, write an INSERT policy and an UPDATE policy.</li>
+          </ol>
+          <p class="done">Done when: both policies are written and you can explain <code>USING</code> vs <code>WITH CHECK</code> in one sentence each.</p>
+        </li>
+      </ul>
+    </div>
+
+    <h2>Ride 1: The Midway Guestbook</h2>
+    <p>Visitors leave a message on the guestbook. Your job is to keep the guestbook safe no matter what anyone types.</p>
+
+    <div class="guestbook">
+      <!-- novalidate: we want YOUR validate() to do the checking, not the browser -->
+      <form id="guest-form" novalidate>
+        <input id="name" placeholder="Your name" autocomplete="off" />
+        <textarea id="message" rows="3" placeholder="Leave a note for the carnival"></textarea>
+        <button type="submit">Sign the Guestbook</button>
+        <div id="error" role="alert"></div>
+      </form>
+      <div id="entries"></div>
+    </div>
+
+    <h2>Inspection Cards (Gold)</h2>
+    <p>Write the safe version of each ride in <code>clipboard.md</code>.</p>
+    <div class="inspection">
+      <div class="card">
+        <h3>1. The Leaky Ticket Booth</h3>
+        <p>A secret service key is pasted straight into a React component. Where should secrets live, and which keys are actually safe to ship to the browser?</p>
+      </div>
+      <div class="card">
+        <h3>2. The Unlocked Prize Closet</h3>
+        <p>A Supabase table has Row Level Security turned off. Who can read and change every row right now? What policy would limit users to their own rows?</p>
+      </div>
+      <div class="card">
+        <h3>3. The Talking Sign</h3>
+        <p>User messages are dropped into the page with <code>innerHTML</code>. Why does the browser treat that text as markup, and what should we use instead?</p>
+      </div>
+      <div class="card">
+        <h3>4. The Bottomless Bucket</h3>
+        <p>The form accepts empty names and 50,000 character messages. Where do we validate, and why is client-side validation not enough by itself?</p>
+      </div>
+      <div class="card">
+        <h3>5. The Open Diary</h3>
+        <p>The <code>.env</code> file got committed to GitHub. What goes in <code>.gitignore</code>, and what must you do with a key that was already pushed?</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="./guestbook.js"></script>
+</body>
+</html>

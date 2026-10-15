@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booth 1: The Ring Toss</title>
+  <link rel="stylesheet" href="/carnival.css" />
+  <style>
+    body { overflow: hidden; }
+    #hud {
+      position: fixed; top: 1rem; left: 1rem;
+      max-width: min(380px, calc(100vw - 2rem));
+      max-height: calc(100vh - 2rem); overflow-y: auto;
+      background: var(--navy); color: var(--cream);
+      padding: 0.75rem 1rem; border-radius: 10px;
+      z-index: 10;
+    }
+    #hud .score { color: var(--gold); font-weight: bold; }
+    #hud a { color: var(--gold); }
+    #hud summary { cursor: pointer; font-weight: bold; color: var(--gold); margin-top: 0.5rem; }
+    #hud ol { padding-left: 1.2rem; margin: 0.4rem 0; }
+    #hud li { margin: 0.4rem 0; font-size: 0.92rem; }
+    #hud .ticket { color: var(--ink); font-size: 0.8rem; padding: 0.1rem 0.5rem; }
+    #hud code { background: rgba(255,255,255,0.12); padding: 0 0.2rem; border-radius: 3px; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <div class="score">Booth 1: Ring Toss | Ringers: <span id="score">0</span></div>
+    <details open>
+      <summary>Booth instructions (click to hide)</summary>
+      <p>Open <code>ring-toss/main.js</code>. Each tier has a numbered TODO box. Save, then check this page.</p>
+      <ol>
+        <li><span class="ticket">Bronze</span> Change the rim color, set 12 cars, and change the spin speed or direction.
+          <br /><b>Done when:</b> the wheel looks and spins differently.</li>
+        <li><span class="ticket">Silver</span> Build a tent: a box body plus a 4-sided cone roof, in two colors.
+          <br /><b>Done when:</b> the tent stands on the grass and the roof sits flush on the body.</li>
+        <li><span class="ticket">Gold</span> Clicking a peg drops a ring that slides down onto it.
+          <br /><b>Done when:</b> every peg click drops a ring and the counter goes up.</li>
+        <li><span class="ticket">Bonus</span> Pick one: drag to look around, upright cars, or a blinking bulb.</li>
+      </ol>
+      <p>Blank screen? Press F12 and read the red error in the Console.</p>
+    </details>
+    <a href="/">Back to the Midway</a>
+  </div>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
