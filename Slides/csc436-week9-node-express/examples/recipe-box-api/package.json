@@ -1,0 +1,22 @@
+{
+  "name": "recipe-box-api",
+  "version": "1.0.0",
+  "description": "CSC 436 Week 9 example: your first Express server, built in stages",
+  "type": "module",
+  "scripts": {
+    "stage1": "node --watch stages/01-hello.js",
+    "stage2": "node --watch stages/02-json.js",
+    "stage3": "node --watch stages/03-params.js",
+    "stage4": "node --watch stages/04-query.js",
+    "stage5": "node --watch stages/05-post.js",
+    "stage6": "node --watch stages/06-put-delete.js",
+    "stage7": "node --watch stages/07-middleware.js",
+    "oops": "node stages/00-oops-commonjs.js",
+    "dev": "node --watch final/server.js",
+    "start": "node final/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
