@@ -1,0 +1,60 @@
+# Recipe Box API test requests
+#
+# VS Code: install the "REST Client" extension (by Huachao Mao),
+# then click "Send Request" above any block below.
+# Thunder Client works too: copy the method, URL and body.
+#
+# Start the server first: npm run dev   (or npm run stage5, stage6, ...)
+
+@base = http://localhost:3000
+
+### Read: every recipe
+GET {{base}}/api/recipes
+
+### Read: filter with a query string
+GET {{base}}/api/recipes?tag=vegetarian&maxMinutes=30
+
+### Read: one recipe by id
+GET {{base}}/api/recipes/3
+
+### Read: an id that does not exist (expect 404)
+GET {{base}}/api/recipes/99
+
+### Create: a good recipe (expect 201)
+POST {{base}}/api/recipes
+Content-Type: application/json
+
+{
+  "name": "Ramen",
+  "cuisine": "Japanese",
+  "minutes": 40,
+  "tags": ["noodles"]
+}
+
+### Create: a bad recipe (expect 400 with a list of problems)
+POST {{base}}/api/recipes
+Content-Type: application/json
+
+{
+  "name": "",
+  "minutes": "forty"
+}
+
+### Create: forgot the Content-Type header (watch what req.body becomes)
+POST {{base}}/api/recipes
+
+{ "name": "Ghost Soup", "cuisine": "Spooky", "minutes": 5 }
+
+### Update: change one field (expect 200)
+PATCH {{base}}/api/recipes/2
+Content-Type: application/json
+
+{
+  "minutes": 45
+}
+
+### Delete (expect 204, then run it again for a 404)
+DELETE {{base}}/api/recipes/4
+
+### A route that does not exist (expect JSON 404, not an HTML page)
+GET {{base}}/api/desserts
