@@ -137,7 +137,7 @@ function TitleSlide() {
           Tuesday your kitchen could only read the menu. Today it takes orders, changes them, throws them out, and every order walks the same assembly line on the way in.
         </p>
         <div style={{ display: "flex", gap: 8, marginTop: 24, flexWrap: "wrap" }}>
-          <span className="chip blue">POST</span><span className="chip amber">PATCH</span><span className="chip warn">DELETE</span><span className="chip">middleware</span><span className="chip good">React meets your server</span>
+          <span className="chip gray">?query (catch-up)</span><span className="chip blue">POST</span><span className="chip amber">PATCH</span><span className="chip warn">DELETE</span><span className="chip">middleware</span><span className="chip good">React meets your server</span>
         </div>
       </div>
       <div className="panel" style={{ padding: 22 }}>
@@ -157,6 +157,101 @@ function TitleSlide() {
         </Col>
       </div>
     </div>
+  );
+}
+
+/* ============ 1b. Catch-up from Tuesday: query strings (stage 4) ============ */
+
+const QUERY_CODE = `app.get("/api/recipes", (req, res) => {
+  const { cuisine, maxMinutes, tag, q } = req.query;
+
+  let results = recipes;            // start with everything
+
+  if (cuisine) {
+    results = results.filter((r) => r.cuisine.toLowerCase() === cuisine.toLowerCase());
+  }
+  if (maxMinutes) {
+    results = results.filter((r) => r.minutes <= Number(maxMinutes));
+  }
+  if (tag) {
+    results = results.filter((r) => r.tags.includes(tag));
+  }
+  if (q) {
+    results = results.filter((r) => r.name.toLowerCase().includes(q.toLowerCase()));
+  }
+
+  res.json(results);                // [] is still a 200
+});`;
+
+// first line of each filter block in QUERY_CODE
+const QUERY_LINES = { cuisine: 6, maxMinutes: 9, tag: 12, q: 15 };
+
+function buildQueryApp() {
+  const recipes = clone(SEED);
+  const app = createApp();
+  app.get("/api/recipes", (req, res) => {
+    const { cuisine, maxMinutes, tag, q } = req.query;
+    let results = recipes;
+    if (cuisine) results = results.filter((r) => r.cuisine.toLowerCase() === cuisine.toLowerCase());
+    if (maxMinutes) results = results.filter((r) => r.minutes <= Number(maxMinutes));
+    if (tag) results = results.filter((r) => r.tags.includes(tag));
+    if (q) results = results.filter((r) => r.name.toLowerCase().includes(q.toLowerCase()));
+    res.json(results);
+  });
+  return app;
+}
+
+const QUERY_PRESETS = [
+  "/api/recipes",
+  "/api/recipes?cuisine=thai",
+  "/api/recipes?maxMinutes=25",
+  "/api/recipes?tag=vegetarian&maxMinutes=30",
+  "/api/recipes?q=taco",
+  "/api/recipes?cuisine=klingon",
+];
+
+function QuerySlide() {
+  const app = useMemo(buildQueryApp, []);
+  const [url, setUrl] = useState(QUERY_PRESETS[3]);
+  const result = app.handle({ method: "GET", url });
+  const query = result.req.query;
+  const used = Object.keys(QUERY_LINES).filter((k) => query[k]);
+  const hl = [2, 4, ...used.flatMap((k) => [QUERY_LINES[k], QUERY_LINES[k] + 1, QUERY_LINES[k] + 2]), 19];
+  const list = Array.isArray(result.body) ? result.body : null;
+  return (
+    <Slide kicker="Catch-up from Tuesday, 10 minutes" title="Query strings: filter the list" sub="We ran out of time Tuesday before stage 4. Params pick ONE recipe (/api/recipes/3). The query string filters MANY (/api/recipes?cuisine=thai). Same route, optional extras.">
+      <Split cols="1.55fr 1fr">
+        <Code hl={hl} dim size={11.5}>{QUERY_CODE}</Code>
+        <Col gap={10}>
+          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+            <span className="mono note">localhost:3000</span>
+            <input className="field mono" value={url} onChange={(e) => setUrl(e.target.value)} />
+          </div>
+          <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
+            {QUERY_PRESETS.map((u) => <button key={u} className={"btn small" + (url === u ? " on" : "")} onClick={() => setUrl(u)}>{u.replace("/api/recipes", "") || "(no query)"}</button>)}
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "0.9fr 1.3fr", gap: 8 }}>
+            <div className="panel" style={{ padding: 10, borderTop: `4px solid ${T.amber}` }}>
+              <div style={{ fontWeight: 800, color: T.amber }}>req.query</div>
+              <pre className="term" style={{ margin: "8px 0 0", fontSize: 12.5 }}>{JSON.stringify(query, null, 2)}</pre>
+            </div>
+            <div className="panel" style={{ padding: 12, borderTop: `4px solid ${T.good}` }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <b style={{ color: T.good }}>Response</b><StatusPill status={result.status} />
+              </div>
+              <div style={{ marginTop: 6, maxHeight: 150, overflow: "auto" }}>
+                {list && list.length === 0 && <div className="mono note" style={{ padding: 6 }}>[ ]  (empty array)</div>}
+                {list && list.map((r) => <div key={r.id} className="note" style={{ padding: "3px 0", borderBottom: `1px solid ${T.line}` }}><b style={{ color: T.ink }}>{r.name}</b> · {r.cuisine} · {r.minutes} min</div>)}
+                {!list && <pre className="term" style={{ margin: 0, fontSize: 12 }}>{pretty(result.body)}</pre>}
+              </div>
+            </div>
+          </div>
+          {list && list.length === 0
+            ? <div className="callout info pop"><div className="h">No matches is not an error</div>The route ran fine and found nothing. Send <span className="mono">[]</span> with 200. A 404 means "that URL does not exist", and this one does.</div>
+            : <div className="callout"><div className="h">Every query value is a STRING</div>Look at the quotes: <span className="mono">"25"</span>, not 25. Use <span className="mono">Number()</span> for numbers and <span className="mono">toLowerCase()</span> so Thai, thai, and THAI all match.</div>}
+        </Col>
+      </Split>
+    </Slide>
   );
 }
 
@@ -234,6 +329,281 @@ function CrudSlide() {
         </table>
       </div>
       <div className="callout info" style={{ marginTop: 14 }}><div className="h">PUT or PATCH?</div>PUT replaces the whole recipe (send every field). PATCH changes only what you send. Forms that edit one field want PATCH. Project 4 accepts either.</div>
+    </Slide>
+  );
+}
+
+/* ============ 3b. Your first POST, line by line (stage 5) ============ */
+
+const POST_CODE = `app.use(express.json());           // read JSON bodies
+
+let nextId = 7;
+
+app.post("/api/recipes", (req, res) => {
+  const { name, cuisine, minutes, tags = [] } = req.body;
+
+  if (typeof name !== "string" || name.trim() === "") {
+    return res.status(400).json({ error: "name is required" });
+  }
+  // ...same check for cuisine...
+  if (typeof minutes !== "number" || minutes <= 0) {
+    return res.status(400).json({ error: "minutes must be a positive number" });
+  }
+
+  const recipe = { id: nextId++, name: name.trim(), cuisine, minutes, tags };
+  recipes.push(recipe);
+
+  res.status(201).json(recipe);
+});`;
+
+const POST_X = {
+  1: { h: "Turn on the body reader", b: "Express ignores request bodies unless you add this. Forget it and req.body is undefined. It goes ABOVE your routes. Two slides from now we break it on purpose." },
+  3: { h: "The server keeps count", b: "The client never picks the id. The server hands out the next number. (Supabase does this for you next week.)" },
+  5: { h: "Same path, new method", b: "GET /api/recipes reads the list. POST /api/recipes adds to it. Express matches method AND path, so these are two different routes." },
+  6: { h: "Unpack the body", b: "The JSON the client sent is now a normal object on req.body. tags = [] means: if they left tags out, use an empty list." },
+  8: { h: "Never trust the client", b: "Anyone can send anything. Check every field before saving. Bad input gets 400 Bad Request and a reason the client can show the user." },
+  9: { h: "return is not optional", b: "return stops the function right here. Without it, the code keeps going and tries to send a second response: Cannot set headers after they are sent." },
+  12: { h: "A number, not a string", b: "\"40\" in quotes is a string and fails. The body is JSON, so a real number arrives as 40. Unlike params and query, body values keep their types." },
+  16: { h: "Build it yourself", b: "Copy only the fields you checked. Never push req.body straight in: someone could send their own id, or fields you never asked for." },
+  17: { h: "Save it", b: "Push into the array in memory. Restart the server and it is gone. Memory is not a database." },
+  19: { h: "201 Created + the new thing", b: "201 means \"I made something\". Send the saved recipe back so the client learns its new id." },
+};
+
+function PostWalkSlide() {
+  const [line, setLine] = useState(1);
+  const x = POST_X[line];
+  const block = { 8: [8, 9, 10], 9: [8, 9, 10], 12: [12, 13, 14], 5: [5], 6: [6], 16: [16], 17: [17], 19: [19], 1: [1], 3: [3] }[line] || [line];
+  return (
+    <Slide kicker="Code walkthrough, stage 5" title="Your first POST, line by line" sub="05-post.js. GET asks for data. POST sends NEW data, riding in the request body as JSON. Click any line.">
+      <Split cols="1.5fr 1fr">
+        <Code hl={block} onLine={(n) => POST_X[n] && setLine(n)} size={12.5}>{POST_CODE}</Code>
+        <Col gap={10}>
+          <div className="panel pop" key={line} style={{ padding: 16, borderLeft: `5px solid ${T.accent}`, minHeight: 140 }}>
+            <div className="note mono">line {line}</div>
+            <div style={{ fontWeight: 800, fontSize: 20, marginTop: 2 }}>{x?.h}</div>
+            <p style={{ marginTop: 6, fontSize: 16, lineHeight: 1.45 }}>{x?.b}</p>
+          </div>
+          <div className="panel" style={{ padding: 14, borderTop: `4px solid ${T.blue}` }}>
+            <div style={{ fontWeight: 800 }}>How to send a POST</div>
+            <p className="note" style={{ marginTop: 2 }}>The browser address bar only sends GET. Use one of these:</p>
+            <ol style={{ margin: "6px 0 0", paddingLeft: 20, fontSize: 14.5, lineHeight: 1.55 }}>
+              <li><b>Postman:</b> new tab, pick <span className="mono">POST</span>, URL <span className="mono">localhost:3000/api/recipes</span>, Body, raw, JSON, paste, Send. Next slide, step by step.</li>
+              <li><b>requests.http:</b> click Send Request above the "Create: a good recipe" block.</li>
+            </ol>
+            <pre className="term" style={{ margin: "8px 0 0", fontSize: 12.5 }}>{`{ "name": "Ramen", "cuisine": "Japanese",
+  "minutes": 40 }`}</pre>
+            <div style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 8 }}><StatusPill status={201} /><span className="note">then GET /api/recipes: Ramen is in the list</span></div>
+          </div>
+        </Col>
+      </Split>
+    </Slide>
+  );
+}
+
+/* ============ 3c. Postman: first three requests ============ */
+
+// Same behavior as stages/05-post.js: 3 recipes, next id 4, same error messages.
+function buildStage5() {
+  const recipes = clone(SEED).slice(0, 3);
+  let nextId = 4;
+  const app = createApp();
+  app.use(jsonParser());
+  app.get("/api/recipes", (req, res) => res.json(recipes));
+  app.get("/api/recipes/:id", (req, res) => {
+    const r = recipes.find((x) => x.id === Number(req.params.id));
+    if (!r) return res.status(404).json({ error: `No recipe with id ${req.params.id}` });
+    res.json(r);
+  });
+  app.post("/api/recipes", (req, res) => {
+    console.log("Body received:", req.body === undefined ? "undefined" : req.body);
+    const { name, cuisine, minutes, tags = [] } = req.body ?? {};
+    if (typeof name !== "string" || name.trim() === "") return res.status(400).json({ error: "name is required and must be text" });
+    if (typeof cuisine !== "string" || cuisine.trim() === "") return res.status(400).json({ error: "cuisine is required and must be text" });
+    if (typeof minutes !== "number" || minutes <= 0) return res.status(400).json({ error: "minutes must be a positive number" });
+    const recipe = { id: nextId++, name: name.trim(), cuisine: cuisine.trim(), minutes, tags };
+    recipes.push(recipe);
+    res.status(201).json(recipe);
+  });
+  return app;
+}
+
+const PM = "#ff6c37"; // Postman orange
+const RAMEN = `{
+  "name": "Ramen",
+  "cuisine": "Japanese",
+  "minutes": 40,
+  "tags": ["noodles"]
+}`;
+const PM_URL = "http://localhost:3000/api/recipes";
+const PM_METHOD_COLOR = { GET: T.good, POST: "#ad7a03", PATCH: "#623497", DELETE: T.warn };
+
+const PM_STEPS = [
+  { k: "install", label: "1. Install", m: "GET", url: PM_URL, body: "",
+    steps: [
+      <>Go to <b>postman.com/downloads</b>. Get the <b>desktop app</b>: Mac (Apple Silicon or Intel) or Windows 64-bit.</>,
+      <>First screen: create a free account, or click <b>Continue with the lightweight API Client</b>. No account is fine for today.</>,
+      <>Start the server: <span className="mono">npm run stage5</span>. Wait for <span className="mono">Kitchen open at http://localhost:3000</span>. Leave that terminal running.</>,
+    ],
+    tip: { h: "Desktop app, not the website", b: "Your server lives at localhost on your laptop. The desktop app reaches it with zero setup." } },
+  { k: "get", label: "2. GET", m: "GET", url: PM_URL, body: "",
+    steps: [
+      <>Click the <b>+</b> tab for a new request.</>,
+      <>Method stays <b>GET</b>. Type the URL: <span className="mono">{PM_URL}</span></>,
+      <>Click <b>Send</b>. Expect <b>200 OK</b> and 3 recipes.</>,
+    ],
+    tip: { h: "Same as the browser", b: "GET is what your address bar sends. Postman just shows the status and headers too." } },
+  { k: "post", label: "3. POST", m: "POST", url: PM_URL, body: RAMEN, fmt: "JSON",
+    steps: [
+      <>New tab. Change the method to <b>POST</b>. Same URL.</>,
+      <>Click the <b>Body</b> tab, choose <b>raw</b>, set the dropdown to <b>JSON</b>.</>,
+      <>Paste the recipe and <b>Send</b>. Expect <b>201 Created</b> and <span className="mono">"id": 4</span>. The server terminal prints <span className="mono">Body received:</span></>,
+    ],
+    tip: { h: "Try it: flip JSON to Text", b: "Text sends no Content-Type: application/json header, so express.json() skips the body. Same request, now a 400." } },
+  { k: "again", label: "4. GET again", m: "GET", url: PM_URL, body: "",
+    steps: [
+      <>Back to the GET tab. <b>Send</b> again: 4 recipes, Ramen is last.</>,
+      <>Now click <b>Restart server</b> (Ctrl + C, then <span className="mono">npm run stage5</span>) and Send once more.</>,
+      <>Back to 3. Memory is wiped on restart. Supabase fixes that next week.</>,
+    ],
+    tip: { h: "That is the whole loop", b: "Read, write, read again to prove it. You will do this for every route you build." } },
+];
+
+function PostmanSlide() {
+  const appRef = useRef(null);
+  if (!appRef.current) appRef.current = buildStage5();
+  const [step, setStep] = useState(0);
+  const [m, setM] = useState("GET");
+  const [url, setUrl] = useState(PM_URL);
+  const [body, setBody] = useState("");
+  const [fmt, setFmt] = useState("JSON");
+  const [running, setRunning] = useState(true);
+  const [result, setResult] = useState(null);
+  const [logs, setLogs] = useState(["Kitchen open at http://localhost:3000"]);
+
+  const pick = (i) => {
+    const s = PM_STEPS[i];
+    setStep(i); setM(s.m); setUrl(s.url); setBody(s.body); setFmt(s.fmt || "JSON"); setResult(null);
+  };
+  const restart = () => {
+    appRef.current = buildStage5();
+    setRunning(true); setResult(null);
+    setLogs(["^C", "$ npm run stage5", "Kitchen open at http://localhost:3000"]);
+  };
+  const send = () => {
+    const u = url.trim();
+    if (u.startsWith("https://")) return setResult({ err: "Error: write EPROTO  (you typed https://, local servers use http://)" });
+    const hit = u.match(/^(?:http:\/\/)?localhost:3000(\/.*)?$/);
+    if (!running || !hit) return setResult({ err: `Error: connect ECONNREFUSED 127.0.0.1:${(u.match(/:(\d+)/) || [])[1] || "80"}` });
+    const hasBody = (m === "POST" || m === "PATCH") && body.trim() !== "";
+    const r = appRef.current.handle({ method: m, url: hit[1] || "/", body: hasBody ? body : undefined, contentType: hasBody ? (fmt === "JSON" ? "application/json" : "text/plain") : undefined });
+    setResult(r);
+    if (r.logs.length) setLogs((l) => [...l, ...r.logs].slice(-6));
+  };
+
+  const s = PM_STEPS[step];
+  const showBody = m === "POST" || m === "PATCH";
+  return (
+    <Slide kicker="Hands on keyboards, 15 minutes" title="Postman: your first three requests" sub="The address bar can only GET. Postman can send any method with a body. Everyone installs it now, then we GET, POST, and GET again.">
+      <Split cols="0.85fr 1.35fr">
+        <Col gap={10}>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            {PM_STEPS.map((x, i) => <button key={x.k} className={"btn small" + (step === i ? " on" : "")} onClick={() => pick(i)}>{x.label}</button>)}
+          </div>
+          <div className="panel pop" key={step} style={{ padding: 14, borderLeft: `5px solid ${PM}` }}>
+            <ol style={{ margin: 0, paddingLeft: 20, fontSize: 15, lineHeight: 1.5, display: "flex", flexDirection: "column", gap: 6 }}>
+              {s.steps.map((t, i) => <li key={i}>{t}</li>)}
+            </ol>
+          </div>
+          <div className="callout info"><div className="h">{s.tip.h}</div>{s.tip.b}</div>
+        </Col>
+
+        {/* the mock Postman window */}
+        <div className="panel" style={{ padding: 0, overflow: "hidden", display: "flex", flexDirection: "column", border: `1px solid ${T.line}` }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "7px 12px", background: "#f6f6f6", borderBottom: `1px solid ${T.line}` }}>
+            <span style={{ width: 10, height: 10, borderRadius: 99, background: PM }} />
+            <b style={{ fontSize: 13 }}>Postman</b>
+            <span className="note" style={{ fontSize: 12 }}>{running ? "server running on :3000" : "server stopped"}</span>
+            <span style={{ flex: 1 }} />
+            <button className="btn small" onClick={() => { setRunning(false); setResult(null); setLogs((l) => [...l, "^C  (server stopped)"].slice(-6)); }} disabled={!running}>Stop server</button>
+            <button className="btn small" onClick={restart}>Restart server</button>
+          </div>
+          <div style={{ padding: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ display: "flex", gap: 6 }}>
+              <select className="field mono" style={{ width: 105, fontWeight: 700, color: PM_METHOD_COLOR[m] }} value={m} onChange={(e) => { setM(e.target.value); setResult(null); }}>
+                {["GET", "POST", "PATCH", "DELETE"].map((x) => <option key={x}>{x}</option>)}
+              </select>
+              <input className="field mono" value={url} onChange={(e) => setUrl(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send()} />
+              <button className="btn" style={{ background: PM, color: "#fff", borderColor: PM, fontWeight: 700 }} onClick={send}>Send</button>
+            </div>
+            <div style={{ display: "flex", gap: 14, fontSize: 13, borderBottom: `1px solid ${T.line}`, paddingBottom: 4 }}>
+              <span className="note">Params</span><span className="note">Headers</span>
+              <span style={{ fontWeight: 700, color: showBody ? T.ink : T.muted, borderBottom: showBody ? `2px solid ${PM}` : "none" }}>Body</span>
+              {showBody && <span style={{ display: "flex", gap: 6, alignItems: "center", marginLeft: "auto" }}>
+                <span className="note">raw</span>
+                <select className="field" style={{ width: 90, padding: "2px 6px", fontSize: 13, fontWeight: 700, color: fmt === "JSON" ? T.good : T.warn }} value={fmt} onChange={(e) => { setFmt(e.target.value); setResult(null); }}>
+                  <option>JSON</option><option>Text</option>
+                </select>
+              </span>}
+            </div>
+            {showBody
+              ? <textarea className="field mono" rows={4} style={{ fontSize: 12.5 }} value={body} onChange={(e) => setBody(e.target.value)} />
+              : <div className="note" style={{ fontSize: 13 }}>GET sends no body. Just the method and the URL.</div>}
+            <div style={{ borderTop: `1px solid ${T.line}`, paddingTop: 8 }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
+                <b style={{ fontSize: 13 }}>Response</b>
+                {result && !result.err && <StatusPill status={result.status} />}
+                {result?.err && <span className="chip warn">Could not send request</span>}
+              </div>
+              <pre className="term pop" key={JSON.stringify(result)} style={{ margin: 0, fontSize: 12, height: 96, overflow: "auto" }}>
+                {!result ? "Click Send" : result.err ? result.err : result.type === "empty" ? "(no body)" : result.type === "json" ? JSON.stringify(result.body, null, 2) : pretty(result.body)}
+              </pre>
+            </div>
+          </div>
+          <div className="term" style={{ margin: 0, borderRadius: 0, fontSize: 11.5, padding: "5px 12px", minHeight: 58 }}>
+            <div className="dim">server terminal</div>
+            {logs.slice(-3).map((l, i) => <div key={i} className={l.includes("undefined") ? "err" : ""}>{l}</div>)}
+          </div>
+        </div>
+      </Split>
+    </Slide>
+  );
+}
+
+/* ============ 3d. Postman: when it goes wrong ============ */
+
+const PM_STUCK = [
+  { see: "Could not send request: connect ECONNREFUSED 127.0.0.1:3000", why: "The server is not running", fix: "npm run stage5, wait for Kitchen open" },
+  { see: "400  name is required and must be text  (body looks fine)", why: "Body format is Text, so no Content-Type: application/json", fix: "Body > raw > JSON" },
+  { see: "400  minutes must be a positive number", why: "\"40\" in quotes is text", fix: "Send 40, no quotes" },
+  { see: "400 + an HTML page saying SyntaxError", why: "Broken JSON: trailing comma, single quotes, missing quote", fix: "Double quotes only, no comma after the last item" },
+  { see: "404  Cannot POST /api/recipes", why: "This server has no POST route (stage 4 or Tuesday's code)", fix: "npm run stage5" },
+  { see: "404  Cannot GET /api/recipe", why: "Typo in the URL", fix: "/api/recipes, with an s" },
+  { see: "A 404 page you do not recognize, but the terminal says Kitchen open", why: "Another app (an old React or Next.js project) already holds port 3000", fix: "Ctrl + C the other app, restart yours" },
+  { see: "SSL or EPROTO error", why: "You typed https://", fix: "Local servers use http://" },
+];
+
+function PostmanStuckSlide() {
+  const [open, setOpen] = useState(null);
+  return (
+    <Slide kicker="Postman, when it goes wrong" title="Read the status, then find the row" sub="Every one of these happens in this room every semester. Click a row for the fix.">
+      <div className="panel" style={{ padding: 6 }}>
+        <table className="t compact">
+          <thead><tr><th style={{ width: "40%" }}>What Postman shows</th><th>Why</th><th style={{ width: "26%" }}>Fix</th></tr></thead>
+          <tbody>
+            {PM_STUCK.map((r, i) => (
+              <tr key={i} onClick={() => setOpen(i)} style={{ cursor: "pointer", background: open === i ? T.accentSoft : "transparent" }}>
+                <td className="mono" style={{ fontSize: 13 }}>{r.see}</td>
+                <td style={{ fontSize: 14, opacity: open === i ? 1 : 0.35 }}>{r.why}</td>
+                <td style={{ fontSize: 14, fontWeight: 700, color: T.good, opacity: open === i ? 1 : 0 }}>{r.fix}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
+        <div className="callout"><div className="h">First digit tells you who to blame</div>4xx: your request is wrong (URL, method, body). 5xx: the server code crashed, check its terminal.</div>
+        <div className="callout info"><div className="h">Done when</div>GET shows 3, POST Ramen gets 201 with id 4, GET shows 4, restart shows 3. Show a neighbor.</div>
+      </div>
     </Slide>
   );
 }
@@ -335,7 +705,7 @@ app.post("/api/recipes", (req, res) => {
           {result && (json && header ? (
             <div className="callout good pop"><div className="h">Body arrived</div>express.json() read the raw text and turned it into an object on req.body.</div>
           ) : (
-            <div className="callout pop"><div className="h">Saved a recipe made of undefined</div>{!json ? "Nobody parsed the body. The text arrived and was ignored." : "express.json() only reads bodies labeled Content-Type: application/json. Thunder Client sets it when you pick JSON. fetch() does NOT, you add it yourself."}</div>
+            <div className="callout pop"><div className="h">Saved a recipe made of undefined</div>{!json ? "Nobody parsed the body. The text arrived and was ignored." : "express.json() only reads bodies labeled Content-Type: application/json. Postman sets it when you pick raw > JSON. fetch() does NOT, you add it yourself."}</div>
           ))}
           <Code size={13.5}>{`// in React, both lines matter
 fetch(url, {
@@ -373,7 +743,7 @@ function ValidateSlide() {
     setResult({ r, db: clone(ref.current.db) });
   };
   return (
-    <Slide kicker="Never trust the client" title="Validate every body" sub="Anyone can send anything to your server: a typo in Thunder Client, a buggy form, or someone poking at it on purpose. Check before you save.">
+    <Slide kicker="Never trust the client" title="Validate every body" sub="Anyone can send anything to your server: a typo in Postman, a buggy form, or someone poking at it on purpose. Check before you save.">
       <Split cols="1.2fr 1fr">
         <Col>
           <Code size={12.5} hl={on ? [3, 4, 5, 6, 7, 8, 9, 10, 11] : []}>{`app.post("/api/recipes", (req, res) => {
@@ -947,7 +1317,8 @@ const { data, loading, error, refetch } = useFetch(API);
 /* ============ 16. Live-code progression ============ */
 
 const STAGES = [
-  { s: "5", cmd: "npm run stage5", title: "POST", what: "Comment out express.json() first. Send a POST from Thunder Client. req.body is undefined. Uncomment. Then send the three bad bodies.", hl: "app.use(express.json());\n\napp.post(\"/api/recipes\", (req, res) => {\n  // validate, build, push\n  res.status(201).json(recipe);\n});" },
+  { s: "4", cmd: "npm run stage4", title: "Query (catch-up)", what: "Tuesday's missing stage. Students add it to their own GET /api/recipes (it is Mission 7 Gold). Try ?cuisine=thai, ?maxMinutes=25, combine with &, then ?cuisine=klingon: [] with 200.", hl: "app.get(\"/api/recipes\", (req, res) => {\n  const { cuisine, maxMinutes } = req.query;\n  let results = recipes;\n  if (cuisine) results = results.filter(...);\n  if (maxMinutes) results = results.filter((r) => r.minutes <= Number(maxMinutes));\n  res.json(results);\n});" },
+  { s: "5", cmd: "npm run stage5", title: "POST", what: "Comment out express.json() first. Send a POST from Postman. req.body is undefined. Uncomment. Then send the three bad bodies.", hl: "app.use(express.json());\n\napp.post(\"/api/recipes\", (req, res) => {\n  // validate, build, push\n  res.status(201).json(recipe);\n});" },
   { s: "6", cmd: "npm run stage6", title: "PATCH + DELETE", what: "PATCH one field. DELETE id 3, then DELETE it again for the 404. Point out 204 has no body.", hl: "app.patch(\"/api/recipes/:id\", (req, res) => { ... });\n\napp.delete(\"/api/recipes/:id\", (req, res) => {\n  ...\n  res.status(204).end();\n});" },
   { s: "7", cmd: "npm run stage7", title: "Middleware", what: "Watch the log lines appear. Hit /api/nope and /api/kaboom. Then delete next() from the logger and let the room find it.", hl: "app.use(logger);\napp.use(express.json());\n// routes...\napp.use(notFound);\napp.use(errorHandler);" },
   { s: "F", cmd: "npm run dev", title: "Final, organized", what: "Same behavior, split into routes/ and middleware/. Walk the folder. Run requests.http top to bottom.", hl: "app.use(\"/api/recipes\", recipesRouter);" },
@@ -957,8 +1328,8 @@ const STAGES = [
 function ProgressionSlide() {
   const [k, setK] = useState(0);
   return (
-    <Slide kicker="Live code, 40 minutes" title="Build it in five stages" sub="Students continue Tuesday's repo. Instructor runs examples/recipe-box-api, stages 5 through 7, then final/, then the client.">
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10 }}>
+    <Slide kicker="Live code, 45 minutes" title="Build it in six stages" sub="Students continue Tuesday's repo. Instructor runs examples/recipe-box-api, stage 4 (Tuesday catch-up) through 7, then final/, then the client.">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 10 }}>
         {STAGES.map((x, i) => (
           <button key={i} className="panel" onClick={() => setK(i)} style={{ padding: 14, textAlign: "left", cursor: "pointer", borderTop: `5px solid ${i === k ? T.accent : i < k ? T.good : T.line}`, background: i === k ? T.accentSoft : T.card }}>
             <div className="note">{x.s === "F" ? "Final" : x.s === "R" ? "Client" : `Stage ${x.s}`}</div>
@@ -973,8 +1344,9 @@ function ProgressionSlide() {
         </div>
         <Code size={13.5} numbers={false}>{STAGES[k].hl}</Code>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 14 }}>
-        <div className="callout"><div className="h">Checkpoint after stage 5</div>Every laptop gets a 201 from POST in Thunder Client and sees the new recipe in GET. Nobody moves on with req.body undefined.</div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 14 }}>
+        <div className="callout info"><div className="h">Checkpoint after stage 4</div>Every laptop: localhost:3000/api/recipes?cuisine=thai in the browser shows only Pad Thai.</div>
+        <div className="callout"><div className="h">Checkpoint after stage 5</div>Every laptop gets a 201 from POST in Postman and sees the new recipe in GET. Nobody moves on with req.body undefined.</div>
         <div className="callout info"><div className="h">Checkpoint after stage 7</div>Terminal shows one log line per request, and /api/desserts returns JSON, not HTML.</div>
       </div>
     </Slide>
@@ -1028,9 +1400,13 @@ function CloseSlide() {
 /* ============ deck ============ */
 
 const SLIDES = [
-  { el: <TitleSlide />, notes: "12:20. Click Send POST while people settle. Name the five stations; by the end of today each one is a line of code they wrote." },
-  { el: <PredictSlide />, notes: "Warm-up in pairs, then reveal row by row with hands up. Row 5 is the bridge into today: path existed, method did not. Row 6 is the most common real-world answer to 'it is not working'." },
+  { el: <TitleSlide />, notes: "12:20. Click Send POST while people settle. Name the five stations; by the end of today each one is a line of code they wrote. Say up front: we start by finishing Tuesday's stage 4. TIMING: the catch-up adds about 15 minutes. Take it from the warm-up (10 instead of 15) and skip the Final/Client demos at the end if needed." },
+  { el: <QuerySlide />, notes: "CATCH-UP, 10 minutes. Click presets left to right. On each, ask: which if blocks run? (They light up.) Point at the quotes in req.query: \"25\" is a string, so Number(). Land on ?cuisine=klingon: [] with 200, not 404. Then run npm run stage4 for real and have everyone add the cuisine filter to their own GET /api/recipes. Mission 7 Gold was exactly this." },
+  { el: <PredictSlide />, notes: "Warm-up in pairs, 10 minutes today, then reveal row by row with hands up. Row 3 checks the query slide they just saw. Row 5 is the bridge into today: path existed, method did not. Row 6 is the most common real-world answer to 'it is not working'." },
   { el: <CrudSlide />, notes: "Click C, R, U, D. Say the pattern: method is the verb, path is the noun. Only POST and PATCH carry a body. DELETE success is 204 with nothing in it." },
+  { el: <PostWalkSlide />, notes: "Click lines 1, 5, 6, 8, 9, 12, 16, 19 in order. Line 9: return. Line 16: never push req.body straight in. The right panel is a preview; the next slide is the hands-on Postman install." },
+  { el: <PostmanSlide />, notes: "HANDS ON, 15 minutes. Step 1: everyone downloads the DESKTOP app from postman.com/downloads (the web version cannot reach localhost without an extra agent). Lightweight API Client is fine, no account needed. Wait until most hands say installed and stage 5 says Kitchen open. Then steps 2 to 4 on the slide, students mirroring in real Postman. In step 3 flip JSON to Text and Send: 400, terminal says Body received: undefined. Flip back. Step 4: Restart server shows memory loss. WATCH FOR: something else on port 3000 (an old Next or Vite app): Node still says Kitchen open but Postman gets that app's 404." },
+  { el: <PostmanStuckSlide />, notes: "Two minutes. Click rows as people raise hands with errors. Leave this slide up while they finish the Done when line, then move on to the playground." },
   { el: <PlaygroundSlide />, notes: "Click presets left to right and narrate the amber table. DELETE 3 twice for the 404. Then Restart server to show memory is not a database. Let a student drive one request." },
   { el: <BodyTrapSlide />, notes: "Start with express.json OFF and send: undefined in the terminal. Turn it ON: body arrives. Then turn the header OFF: undefined again. Point at the fetch snippet: React needs that header line." },
   { el: <ValidateSlide />, notes: "Validation ON: click Empty, minutes as text, Blank name. Then turn it OFF and click the same ones: garbage saved with 201. Sneaky id: we ignore their id. Say it: never trust the client." },
@@ -1043,8 +1419,8 @@ const SLIDES = [
   { el: <RouterSlide />, notes: "Click each file. In server.js line 13 mounts the router at /api/recipes, so inside the router '/' means /api/recipes. ESM .js extension reminder. This is the shape Project 4 should have." },
   { el: <RequestsSlide />, notes: "Open examples/recipe-box-api/requests.http and run it top to bottom against npm run dev. Sad paths count. The block with no Content-Type is planted on purpose." },
   { el: <ConnectSlide />, notes: "Without cors: the console error. Read the important part aloud: blocked by CORS policy. Toggle cors on, load. Then do it for real with two terminals. Kill the server to show the error state. Full CORS lesson Nov 5, keep this to 5 minutes." },
-  { el: <ProgressionSlide />, notes: "Leave the deck. Stages 5, 6, 7 from examples/recipe-box-api while students extend Tuesday's repo. Checkpoints after 5 and 7. Final and Client are demo only if time is short." },
-  { el: <AssignmentSlide />, notes: "25 minute timer. Circulate for req.body undefined, missing next(), notFound above routes, double responses (missing return), and Number() on params." },
+  { el: <ProgressionSlide />, notes: "Leave the deck. Stage 4 first (quick, they saw it on the catch-up slide), then 5, 6, 7 from examples/recipe-box-api while students extend Tuesday's repo. Checkpoints after 4, 5 and 7. Final and Client are demo only if time is short." },
+  { el: <AssignmentSlide />, notes: "25 minute timer. Circulate for req.body undefined, missing next(), notFound above routes, double responses (missing return), and Number() on params and query. Students who never finished Mission 7 Gold (query filters) can do it now from stage 4." },
   { el: <CloseSlide />, notes: "Hands up per question. Q2 and Q4 are the bugs they will actually hit tonight. Tease Tuesday: the array becomes Supabase and data survives a restart." },
 ];
 
