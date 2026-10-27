@@ -1,0 +1,108 @@
+# Recipe Box API test requests, Week 10 (Supabase edition)
+#
+# VS Code: install the "REST Client" extension (by Huachao Mao),
+# then click "Send Request" above any block below.
+# Thunder Client works too: copy the method, URL and body.
+#
+# Start the server first: npm run dev
+# Keep the Supabase Table Editor open in a browser tab and watch the rows change.
+
+@base = http://localhost:3000
+
+### Read: every recipe (now from the database, ordered by id)
+GET {{base}}/api/recipes
+
+### Read: one recipe by id
+GET {{base}}/api/recipes/3
+
+### Read: an id that does not exist (expect 404)
+GET {{base}}/api/recipes/99
+
+### Read: an id that is not a number (expect 404 from checkId, NOT a 500)
+GET {{base}}/api/recipes/two
+
+### Create: a good recipe (expect 201, with a new id and created_at)
+POST {{base}}/api/recipes
+Content-Type: application/json
+
+{
+  "name": "Ramen",
+  "cuisine": "Japanese",
+  "minutes": 40,
+  "tags": ["noodles"]
+}
+
+### Create: a bad recipe (expect 400 with a list of problems)
+POST {{base}}/api/recipes
+Content-Type: application/json
+
+{
+  "name": "",
+  "minutes": "forty"
+}
+
+### Create: minutes is not a whole number (expect 400; the column is an integer)
+POST {{base}}/api/recipes
+Content-Type: application/json
+
+{
+  "name": "Half Soup",
+  "cuisine": "French",
+  "minutes": 12.5
+}
+
+### Create: trying to choose our own id (expect 201, and the database ignores it)
+POST {{base}}/api/recipes
+Content-Type: application/json
+
+{
+  "id": 500,
+  "name": "Sneaky Stew",
+  "cuisine": "Irish",
+  "minutes": 90
+}
+
+### Update: change one field (expect 200 with the updated row)
+PATCH {{base}}/api/recipes/2
+Content-Type: application/json
+
+{
+  "minutes": 45
+}
+
+### Update: an id that does not exist (expect 404)
+PATCH {{base}}/api/recipes/99
+Content-Type: application/json
+
+{
+  "minutes": 45
+}
+
+### Delete (expect 204, then run it again for a 404)
+DELETE {{base}}/api/recipes/4
+
+### Filters (Gold): vegetarian and 30 minutes or less
+GET {{base}}/api/recipes?tag=vegetarian&maxMinutes=30
+
+### Filters (Gold): cuisine, any capitalization
+GET {{base}}/api/recipes?cuisine=thai
+
+### Filters (Gold): name contains
+GET {{base}}/api/recipes?q=ram
+
+### A route that does not exist (expect JSON 404)
+GET {{base}}/api/desserts
+
+### THE RESTART TEST: stop the server (Ctrl+C), start it again (npm run dev),
+### then run the first request again. Ramen is still there. Last week it was not.
+
+### Thursday, after add-servings.sql and new types: create with servings (expect 201)
+POST {{base}}/api/recipes
+Content-Type: application/json
+
+{
+  "name": "Tomato Soup",
+  "cuisine": "French",
+  "minutes": 30,
+  "servings": 4
+}

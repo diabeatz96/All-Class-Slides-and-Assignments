@@ -1,0 +1,27 @@
+{
+  // TypeScript settings for a Node server that runs .ts files directly.
+  "compilerOptions": {
+    // CHECK ONLY. Node runs our .ts files itself (it strips the types),
+    // so the TypeScript compiler never needs to write .js files.
+    "noEmit": true,
+
+    // Modern JavaScript and modern Node-style imports.
+    "target": "esnext",
+    "module": "nodenext",
+
+    // Three rules that match how Node runs TypeScript:
+    "allowImportingTsExtensions": true, // write "./file.ts", the real file name
+    "verbatimModuleSyntax": true,       // type-only imports must say `import type`
+    "erasableSyntaxOnly": true,         // only syntax Node can simply erase
+
+    // The safety net. This is the whole point.
+    "strict": true,
+
+    // Bring in the types for Node itself (process.env and friends).
+    "types": ["node"],
+
+    // Do not re-check the types inside node_modules.
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts"]
+}

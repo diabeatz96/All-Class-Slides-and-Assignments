@@ -1,0 +1,34 @@
+{
+  "name": "recipe-box-api",
+  "version": "2.0.0",
+  "description": "CSC 436 Week 10 example: the Recipe Box API moves into Supabase (Tuesday), then into TypeScript (Thursday)",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "node --watch --env-file=.env checkpoints/05-filters/server.js",
+    "cp00": "node --watch checkpoints/00-start/server.js",
+    "cp01": "node --watch --env-file=.env checkpoints/01-connected/server.js",
+    "cp02": "node --watch --env-file=.env checkpoints/02-read/server.js",
+    "cp03": "node --watch --env-file=.env checkpoints/03-create/server.js",
+    "cp04": "node --watch --env-file=.env checkpoints/04-crud/server.js",
+    "cp05": "node --watch --env-file=.env checkpoints/05-filters/server.js",
+    "cp06": "node --watch --env-file=.env checkpoints/06-typed-client/server.js",
+    "cp07": "node --watch --env-file=.env checkpoints/07-typed-middleware/server.js",
+    "cp08": "node --watch --env-file=.env checkpoints/08-all-typescript/server.ts",
+    "cp09": "node --watch --env-file=.env checkpoints/09-servings/server.ts",
+    "typecheck": "tsc -p checkpoints/06-typed-client && tsc -p checkpoints/07-typed-middleware && tsc -p checkpoints/08-all-typescript && tsc -p checkpoints/09-servings"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
+    "cors": "^2.8.6",
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
+  }
+}
