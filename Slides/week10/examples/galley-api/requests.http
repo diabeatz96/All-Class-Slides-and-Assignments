@@ -1,0 +1,92 @@
+# Recipe Box API test requests, Week 11
+#
+# VS Code: install the "REST Client" extension (by Huachao Mao),
+# then click "Send Request" above any block below.
+# Thunder Client works too: copy the method, URL, headers and body.
+#
+# Tuesday: start the server first (npm run dev or npm run cp14).
+# Thursday: change @base to your Vercel production URL and run them all again.
+
+@base = http://localhost:3000
+# @base = https://your-project.vercel.app
+
+### Health check (Thursday, checkpoint 15 and later): expect 200 and runningOn
+GET {{base}}/api/health
+
+### API info
+GET {{base}}/
+
+### Read: every recipe
+GET {{base}}/api/recipes
+
+### Read: one recipe by id
+GET {{base}}/api/recipes/3
+
+### Read: an id that does not exist (expect 404)
+GET {{base}}/api/recipes/99
+
+### Read: an id that is not a number (expect 404 from checkId, NOT a 500)
+GET {{base}}/api/recipes/two
+
+### Create: a good recipe (expect 201 with a new id)
+POST {{base}}/api/recipes
+Content-Type: application/json
+
+{
+  "name": "Ramen",
+  "cuisine": "Japanese",
+  "minutes": 40,
+  "tags": ["noodles"]
+}
+
+### Create: a bad recipe (expect 400 with a list of problems)
+POST {{base}}/api/recipes
+Content-Type: application/json
+
+{
+  "name": "",
+  "minutes": "forty"
+}
+
+### Create: broken JSON (expect 400 "Request body is not valid JSON")
+POST {{base}}/api/recipes
+Content-Type: application/json
+
+{ "name": "oops
+
+### Update: change one field (expect 200)
+PATCH {{base}}/api/recipes/2
+Content-Type: application/json
+
+{
+  "minutes": 45
+}
+
+### Delete (expect 204, then run it again for a 404)
+DELETE {{base}}/api/recipes/4
+
+### Filters: vegetarian and 30 minutes or less
+GET {{base}}/api/recipes?tag=vegetarian&maxMinutes=30
+
+### A route that does not exist (expect JSON 404)
+GET {{base}}/api/desserts
+
+######## CORS EXPERIMENTS (Tuesday) ########
+# These requests add an Origin header by hand, the way a browser would.
+# Thunder Client and REST Client never BLOCK anything: they just show you
+# the headers. Look for Access-Control-Allow-Origin in each response.
+
+### Pretend to be the page on 5173 (in CORS_ORIGINS): the header comes back
+GET {{base}}/api/recipes
+Origin: http://localhost:5173
+
+### Pretend to be a page on 5174 (NOT in the list): still a 200 and still the data,
+### but no Access-Control-Allow-Origin header. A browser would hide this response.
+GET {{base}}/api/recipes
+Origin: http://localhost:5174
+
+### The preflight a browser sends before a JSON POST (expect 204 and Allow headers)
+OPTIONS {{base}}/api/recipes
+Origin: http://localhost:5173
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type

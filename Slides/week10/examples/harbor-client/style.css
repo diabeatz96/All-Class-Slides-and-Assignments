@@ -1,0 +1,16 @@
+body { font-family: system-ui, sans-serif; background: #0b2545; color: #f4f1e8; margin: 0; padding: 24px; }
+header h1 { margin: 0; color: #f2c14e; font-size: 34px; }
+header p { margin: 6px 0; color: #cfe6f2; }
+.origin code { background: #f2c14e; color: #2a1d10; padding: 3px 8px; border-radius: 6px; font-size: 18px; font-weight: 700; }
+.card { background: #13315c; border: 1px solid #24609a; border-radius: 12px; padding: 16px 18px; margin-top: 16px; max-width: 900px; }
+.card h2 { margin: 0 0 10px; font-size: 20px; color: #8fe3dc; }
+label { font-weight: 700; display: block; margin-bottom: 6px; }
+.row { display: flex; gap: 8px; }
+input { flex: 1; font-size: 16px; padding: 8px 10px; border-radius: 8px; border: 1px solid #24609a; background: #071a2f; color: #f4f1e8; font-family: ui-monospace, Consolas, monospace; }
+button { font-size: 15px; font-weight: 700; padding: 8px 14px; border-radius: 8px; border: 0; background: #f2c14e; color: #2a1d10; cursor: pointer; }
+button:hover { filter: brightness(1.08); }
+.buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+.hint { color: #9fb7cc; font-size: 14px; margin: 8px 0 0; }
+pre { background: #020a12; padding: 12px; border-radius: 8px; white-space: pre-wrap; min-height: 120px; font-size: 14px; margin: 0; }
+.ok { color: #7be0a2; }
+.bad { color: #ff8a73; }

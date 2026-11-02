@@ -1,0 +1,26 @@
+{
+  "name": "recipe-box-api",
+  "version": "3.0.0",
+  "description": "CSC 436 Recipe Box API, TypeScript (Track B), ready to deploy on Vercel (Week 11)",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "node --watch --env-file=.env server.ts",
+    "start": "node --env-file=.env server.ts",
+    "typecheck": "tsc",
+    "types": "npx supabase gen types typescript --project-id YOUR_PROJECT_REF --schema public > data/database.types.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
+    "cors": "^2.8.6",
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
+}

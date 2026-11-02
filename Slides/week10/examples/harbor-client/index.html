@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Harbor Client: CORS from the browser's side</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Harbor Client</h1>
+      <p>This page is a ship asking to dock. The browser is the harbor master.</p>
+      <p class="origin">This page's origin: <code id="origin"></code></p>
+    </header>
+
+    <section class="card">
+      <label for="base">API base URL (no slash at the end)</label>
+      <div class="row">
+        <input id="base" spellcheck="false" />
+        <button id="save">Save</button>
+      </div>
+      <p class="hint">Tuesday: http://localhost:3000. Thursday: your Vercel production URL, like https://your-project.vercel.app</p>
+    </section>
+
+    <section class="card">
+      <h2>Send a request</h2>
+      <div class="buttons">
+        <button data-act="health">GET /api/health</button>
+        <button data-act="list">GET /api/recipes</button>
+        <button data-act="create">POST /api/recipes (JSON)</button>
+        <button data-act="remove">DELETE the recipe I just made</button>
+      </div>
+      <p class="hint">Before you click: predict. Will the request reach the server? Will this page be allowed to read the answer?</p>
+    </section>
+
+    <section class="card">
+      <h2>What this page could see</h2>
+      <pre id="out">Nothing yet.</pre>
+    </section>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "harbor-client",
+  "private": true,
+  "version": "1.0.0",
+  "description": "CSC 436 Week 11: a tiny browser page for watching CORS happen",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5173 --strictPort",
+    "stranger": "vite --port 5174 --strictPort"
+  },
+  "devDependencies": {
+    "vite": "^8.0.0"
+  }
+}
